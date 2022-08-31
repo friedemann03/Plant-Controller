@@ -109,7 +109,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
-
+    HAL_GPIO_TogglePin(LD6_GPIO_Port, LD6_Pin);
+    HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
