@@ -51,7 +51,7 @@ endif ()
 
 include_directories(Core/Inc USB_HOST/App USB_HOST/Target Drivers/STM32F4xx_HAL_Driver/Inc Drivers/STM32F4xx_HAL_Driver/Inc/Legacy Middlewares/ST/STM32_USB_Host_Library/Core/Inc Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc Drivers/CMSIS/Device/ST/STM32F4xx/Include Drivers/CMSIS/Include)
 
-add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE)
+add_definitions(-DDEBUG -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE)
 
 file(GLOB_RECURSE SOURCES "USB_HOST/*.*" "Core/*.*" "Middlewares/*.*" "Drivers/*.*")
 
