@@ -1,6 +1,6 @@
 .idea
 .idea/
-debug
-build
+debug*
+build*
 cmake*/
 debug*/
