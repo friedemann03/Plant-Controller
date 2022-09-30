@@ -14,7 +14,7 @@ set(SIZE arm-none-eabi-size)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # project settings
-project(mes_blinky C CXX ASM)
+project(Plant-Controller C CXX ASM)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 
@@ -49,12 +49,31 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
+include_directories(
+        inc
+        Core/Inc
+        Drivers/STM32F4xx_HAL_Driver/Inc
+        Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
+        Drivers/CMSIS/Device/ST/STM32F4xx/Include
+        Drivers/CMSIS/Include
+        vendor/anchor/console/include
+)
+
+# Includes for code completion in Unit Tests
+include_directories(
+        vendor/ceedling/vendor/unity/src
+        vendor/ceedling/vendor/cmock/src
+        build_test/test/mocks
+)
+
 list(APPEND SOURCES
         src/controller_led.c
         src/subsystem_tim.c
         src/subsystem_gpio.c
+        src/subsystem_uart.c
         src/retarget.c
         src/log_module.c
+        src/shell.c
         Core/Src/main.c
         Core/Src/gpio.c
         Core/Src/tim.c
@@ -64,29 +83,14 @@ list(APPEND SOURCES
         Core/Src/system_stm32f4xx.c
         Core/Src/stm32f4xx_hal_msp.c
         Core/Src/stm32f4xx_it.c
+        vendor/anchor/console/src/console.c
+        Core/Startup/startup_stm32f446retx.s
         )
 
-include_directories(
-        inc
-        Core/Inc
-        Drivers/STM32F4xx_HAL_Driver/Inc
-        Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
-        Drivers/CMSIS/Device/ST/STM32F4xx/Include
-        Drivers/CMSIS/Include
-        )
-
-# Includes for code completion in Unit Tests
-include_directories(
-        vendor/ceedling/vendor/unity/src
-        vendor/ceedling/vendor/cmock/src
-        build_test/test/mocks
-)
 
 add_definitions(-DDEBUG -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F446xx)
 
-file(GLOB_RECURSE SOURCES
-        "src/*.*"
-        "Core/*.*"
+file(GLOB_RECURSE SOURCES2
         "Drivers/*.*"
         )
 
@@ -96,7 +100,10 @@ add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR
 add_link_options(-mcpu=cortex-m4 -mthumb -mthumb-interwork)
 add_link_options(-T ${LINKER_SCRIPT})
 
-add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
+add_executable(${PROJECT_NAME}.elf
+        ${SOURCES}
+        ${SOURCES2}
+        ${LINKER_SCRIPT})
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)

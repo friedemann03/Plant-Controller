@@ -5,7 +5,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "subsystem_gpio.h"
 #include "gpio.h"
-#include "log_module.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 
@@ -32,7 +32,6 @@ static const GPIO_TypeDef *portMap[8] = {GPIOA,
 /* Function definitions ------------------------------------------------------*/
 void Gpio_Subsystem_Init(void) {
     MX_GPIO_Init();
-    Log_Message(LOG_LVL_SYSTEM, "GPIO Subsystem Initialized.\n");
 }
 
 void Gpio_Set_Output_Pin(uint32_t port, uint32_t pinMask) {
