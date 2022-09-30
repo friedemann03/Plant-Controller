@@ -4,7 +4,6 @@
 
 #include "controller_led.h"
 #include "stdbool.h"
-#include "log_module.h"
 
 
 
@@ -15,7 +14,6 @@ STATIC uint32_t led_ports[] = {LED2_GPIO_Port};
 
 // Public Functions
 void Led_Controller_Init(void) {
-    Log_Message(LOG_LVL_SYSTEM, "LED Controller Starting.\n");
     Tim_EnableIRQ(true, TIMER_10);
     Tim_Enable(true, TIMER_10);
 }
@@ -23,7 +21,11 @@ void Led_Controller_Init(void) {
 
 void Led_Controller_DeInit(void) {
     Tim_EnableIRQ(false, TIMER_10);
-    Tim_EnableIRQ(false, TIMER_11);
+    Gpio_Reset_Output_Pin(led_ports[0], led_pins[0]);
+}
+
+void Led_Enable_Blinking(bool status) {
+    Tim_Enable(status, TIMER_10);
     Gpio_Reset_Output_Pin(led_ports[0], led_pins[0]);
 }
 

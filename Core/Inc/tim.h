@@ -37,7 +37,6 @@ extern "C" {
 /* USER CODE END Private defines */
 
 void MX_TIM10_Init(void);
-void MX_TIM11_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 

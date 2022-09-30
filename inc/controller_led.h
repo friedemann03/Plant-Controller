@@ -16,4 +16,6 @@ void Led_Controller_Update(void);
 
 void Led_Controller_DeInit(void);
 
+void Led_Enable_Blinking(bool status);
+
 #endif //YS_EXERCISE_WEEK3_CONTROLLER_LED_H

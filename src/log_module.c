@@ -9,7 +9,6 @@
 #include "retarget.h"
 
 void Log_Module_Init(void) {
-    MX_USART2_UART_Init();
     RetargetInit(&huart2);
     printf("\n");
     Log_Message(LOG_LVL_SYSTEM, "=== BOARD RESET ===\n");
