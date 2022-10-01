@@ -21,10 +21,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "subsystem_uart.h"
 #include "subsystem_tim.h"
 #include "subsystem_gpio.h"
 #include "controller_led.h"
+#include "usart.h"
 #include "log_module.h"
+#include "shell.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -86,12 +89,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  Log_Module_Init();
+
+  Uart_Subsystem_Init();
+
+//  Log_Module_Init();
 
   Gpio_Subsystem_Init();
+
   Tim_Subsystem_Init();
 
-
+  Shell_Init();
   Led_Controller_Init();
   
   /* USER CODE END 2 */
@@ -100,7 +107,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+    Shell_Read_Function();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -16,4 +16,5 @@ Watering happens either by using the moisture sensor's feedback or by a set amou
 The system also displays information on an LCD Screen. 
 You can cycle through Moisture Level, Water Level, Current Time, Current Watering and Trigger Mode by pressing a button.
 
-Changing the watering mode, the trigger mode, setting times and moisture levels etc. is done via a simple terminal over UART.
+Changing the watering mode, the trigger mode, setting times and moisture levels etc. is done via a simple console over UART.
+

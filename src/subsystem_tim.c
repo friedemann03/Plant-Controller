@@ -7,7 +7,7 @@
 #include "stdbool.h"
 #include "tim.h"
 #include "subsystem_gpio.h"
-#include "log_module.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 
@@ -31,8 +31,6 @@ const uint32_t *timerMap[15] = {0, (uint32_t *) TIM1, (uint32_t *) TIM2,
 /* Function definitions ------------------------------------------------------*/
 void Tim_Subsystem_Init(void) {
     MX_TIM10_Init();
-    MX_TIM11_Init();
-    Log_Message(LOG_LVL_SYSTEM, "Timer Subsystem Initialized.\n");
 }
 
 
