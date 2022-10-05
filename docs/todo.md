@@ -19,4 +19,6 @@
 - [ ] get Peristaltic Pump
 - [ ] get LCD Screen
 - [ ] get Ultrasonic Distance Sensor
-- 
+
+## Exercises
+- [ ] make draft of final project report
