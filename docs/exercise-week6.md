@@ -13,4 +13,4 @@
 > Include any relevant pieces from past assignments (such as the state machine documentation
 > from the recent exercise).
 
-The Draft of the final project report can be found [here](TODO).
+The Draft of the final project report can be found [here]([TODO](https://github.com/friedemann03/Plant-Controller/blob/main/docs/final-report/MES_FinalReport-Draft.pdf)).
