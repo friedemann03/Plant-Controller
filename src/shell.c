@@ -8,6 +8,7 @@
 /* Private includes ----------------------------------------------------------*/
 #include "subsystem_uart.h"
 #include "controller_led.h"
+#include "log_module.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -37,6 +38,7 @@ const console_init_t debugConsole = {
 CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
                     CONSOLE_INT_ARG_DEF(status, "1 - enable, 0 - disable"),
                     CONSOLE_INT_ARG_DEF(fastMode, "1 - fast, 0 - slow"));
+CONSOLE_COMMAND_DEF(dummy_log, "A dummy command, logging a simple message to make sure logging works.");
 
 
 /**
@@ -46,6 +48,10 @@ CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
 static void led_command_handler(const led_args_t *args) {
     Led_Controller_EnableFastMode(args->fastMode);
     Led_Controller_Enable(args->status);
+}
+
+static void dummy_log_command_handler(const dummy_log_args_t *args) {
+    LOG_DEBUG("Logging works fine :)");
 }
 
 /**
@@ -73,4 +79,5 @@ void Shell_Read_Function(void) {
 void Shell_Init(void) {
     console_init(&debugConsole);
     console_command_register(led);
+    console_command_register(dummy_log);
 }

@@ -94,6 +94,9 @@ void logging_log_impl(logging_logger_t* logger, logging_level_t level, const cha
     if (m_init.lock_function) {
         m_init.lock_function(false);
     }
+
+    snprintf(m_write_buffer, FULL_LOG_MAX_LENGTH, "0");
+    snprintf(m_write_buffer, 1, " ");
 }
 
 void logging_set_level_impl(logging_logger_t* logger, logging_level_t level) {

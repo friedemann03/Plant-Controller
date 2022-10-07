@@ -1,4 +1,3 @@
-#THIS FILE IS AUTO GENERATED FROM THE TEMPLATE! DO NOT CHANGE!
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_VERSION 1)
 cmake_minimum_required(VERSION 3.23)
@@ -57,6 +56,7 @@ include_directories(
         Drivers/CMSIS/Device/ST/STM32F4xx/Include
         Drivers/CMSIS/Include
         vendor/anchor/console/include
+        vendor/anchor/logging/include
 )
 
 # Includes for code completion in Unit Tests
@@ -71,7 +71,6 @@ list(APPEND SOURCES
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c
-        src/retarget.c
         src/log_module.c
         src/shell.c
         src/module_led.c
@@ -85,11 +84,20 @@ list(APPEND SOURCES
         Core/Src/stm32f4xx_hal_msp.c
         Core/Src/stm32f4xx_it.c
         vendor/anchor/console/src/console.c
+        vendor/anchor/logging/src/logging.c
         Core/Startup/startup_stm32f446retx.s
         )
 
 
 add_definitions(-DDEBUG -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F446xx)
+foreach(sourcefile ${SOURCES})
+    # Add the FILE_BASENAME=filename compile definition to the list.
+    get_filename_component(basename "${sourcefile}" NAME)
+    # Set the updated compile definitions on the source file.
+    set_property(
+            SOURCE "${sourcefile}" APPEND
+            PROPERTY COMPILE_DEFINITIONS "FILENAME=\"${basename}\"")
+endforeach()
 
 file(GLOB_RECURSE SOURCES2
         "Drivers/*.*"
