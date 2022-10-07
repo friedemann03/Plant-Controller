@@ -35,7 +35,8 @@ const console_init_t debugConsole = {
  *    used when called the help menu.
  */
 CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
-                    CONSOLE_INT_ARG_DEF(status, "1 - enable, 0 - disable"));
+                    CONSOLE_INT_ARG_DEF(status, "1 - enable, 0 - disable"),
+                    CONSOLE_INT_ARG_DEF(fastMode, "1 - fast, 0 - slow"));
 
 
 /**
@@ -43,7 +44,8 @@ CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
  * @param args struct for parameters. See CONSOLE_COMMAND_DEF for detailed info.
  */
 static void led_command_handler(const led_args_t *args) {
-    Led_Enable_Blinking(args->status);
+    Led_Controller_EnableFastMode(args->fastMode);
+    Led_Controller_Enable(args->status);
 }
 
 /**
