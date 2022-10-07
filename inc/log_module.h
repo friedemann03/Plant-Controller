@@ -7,6 +7,6 @@
 
 #include "anchor/logging/logging.h"
 
-void Logging_Module_Init(void);
+void Log_Module_Init(void);
 
 #endif //PLANT_CONTROLLER_LOG_MODULE_H
