@@ -92,7 +92,7 @@ int main(void)
 
   Uart_Subsystem_Init();
 
-//  Log_Module_Init();
+  Log_Module_Init();
 
   Gpio_Subsystem_Init();
 
