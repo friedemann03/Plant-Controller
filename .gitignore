@@ -4,3 +4,5 @@ debug*
 build*
 cmake*/
 debug*/
+
+.DS_Store
