@@ -6,6 +6,7 @@
 #define PLANT_CONTROLLER_LOG_MODULE_H
 
 #include "anchor/logging/logging.h"
+#include "log_module_colors.h"
 
 void Log_Module_Init(void);
 
