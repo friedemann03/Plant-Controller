@@ -44,7 +44,7 @@ void MX_TIM10_Init(void)
   /* USER CODE BEGIN TIM10_Init 1 */
 
   /* USER CODE END TIM10_Init 1 */
-  TIM_InitStruct.Prescaler = 999;
+  TIM_InitStruct.Prescaler = 199;
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
   TIM_InitStruct.Autoreload = 41999;
   TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
