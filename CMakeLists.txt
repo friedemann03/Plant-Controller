@@ -74,6 +74,7 @@ list(APPEND SOURCES
         src/retarget.c
         src/log_module.c
         src/shell.c
+        src/module_led.c
         Core/Src/main.c
         Core/Src/gpio.c
         Core/Src/tim.c
