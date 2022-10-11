@@ -20,7 +20,7 @@ void SR04_Init(sr04_t *me, uint8_t address) {
     me->rawData[0] = 0;
     me->rawData[1] = 0;
     me->rawData[2] = 0;
-    me->address = address;
+    me->address = address << 1;
 }
 
 void SR04_Start_Measurement(sr04_t *me) {
@@ -42,5 +42,5 @@ static uint32_t calculateDistance(uint8_t byteH, uint8_t byteM, uint8_t byteL) {
     uint32_t result = (byteH << 16);
     result = result + (byteM << 8);
     result = result + (byteL);
-    return result / 10000;
+    return result / 1000;
 }
