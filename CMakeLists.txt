@@ -71,6 +71,7 @@ list(APPEND SOURCES
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c
+        src/subsystem_i2c.c
         src/log_module.c
         src/shell.c
         src/module_led.c

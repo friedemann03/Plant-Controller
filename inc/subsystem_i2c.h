@@ -1,0 +1,8 @@
+//
+// Created by Friedemann Drepper on 11.10.22.
+//
+
+#ifndef PLANT_CONTROLLER_SUBSYSTEM_I2C_H
+#define PLANT_CONTROLLER_SUBSYSTEM_I2C_H
+
+#endif //PLANT_CONTROLLER_SUBSYSTEM_I2C_H
