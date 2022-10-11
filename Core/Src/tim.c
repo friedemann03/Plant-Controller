@@ -24,8 +24,6 @@
 
 /* USER CODE END 0 */
 
-TIM_HandleTypeDef htim11;
-
 /* TIM10 init function */
 void MX_TIM10_Init(void)
 {
@@ -65,62 +63,28 @@ void MX_TIM11_Init(void)
 
   /* USER CODE END TIM11_Init 0 */
 
+  LL_TIM_InitTypeDef TIM_InitStruct = {0};
+
+  /* Peripheral clock enable */
+  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_TIM11);
+
+  /* TIM11 interrupt Init */
+  NVIC_SetPriority(TIM1_TRG_COM_TIM11_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  NVIC_EnableIRQ(TIM1_TRG_COM_TIM11_IRQn);
+
   /* USER CODE BEGIN TIM11_Init 1 */
 
   /* USER CODE END TIM11_Init 1 */
-  htim11.Instance = TIM11;
-  htim11.Init.Prescaler = 3999;
-  htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim11.Init.Period = 4199;
-  htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim11.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim11) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  TIM_InitStruct.Prescaler = 3999;
+  TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
+  TIM_InitStruct.Autoreload = 4199;
+  TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
+  LL_TIM_Init(TIM11, &TIM_InitStruct);
+  LL_TIM_DisableARRPreload(TIM11);
   /* USER CODE BEGIN TIM11_Init 2 */
 
   /* USER CODE END TIM11_Init 2 */
 
-}
-
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
-{
-
-  if(tim_baseHandle->Instance==TIM11)
-  {
-  /* USER CODE BEGIN TIM11_MspInit 0 */
-
-  /* USER CODE END TIM11_MspInit 0 */
-    /* TIM11 clock enable */
-    __HAL_RCC_TIM11_CLK_ENABLE();
-
-    /* TIM11 interrupt Init */
-    HAL_NVIC_SetPriority(TIM1_TRG_COM_TIM11_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(TIM1_TRG_COM_TIM11_IRQn);
-  /* USER CODE BEGIN TIM11_MspInit 1 */
-
-  /* USER CODE END TIM11_MspInit 1 */
-  }
-}
-
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
-{
-
-  if(tim_baseHandle->Instance==TIM11)
-  {
-  /* USER CODE BEGIN TIM11_MspDeInit 0 */
-
-  /* USER CODE END TIM11_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_TIM11_CLK_DISABLE();
-
-    /* TIM11 interrupt Deinit */
-    HAL_NVIC_DisableIRQ(TIM1_TRG_COM_TIM11_IRQn);
-  /* USER CODE BEGIN TIM11_MspDeInit 1 */
-
-  /* USER CODE END TIM11_MspDeInit 1 */
-  }
 }
 
 /* USER CODE BEGIN 1 */
