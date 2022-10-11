@@ -224,7 +224,10 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void TIM1_TRG_COM_TIM11_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 0 */
-
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM11)) {
+      LL_TIM_ClearFlag_UPDATE(TIM11);
+      Tim_11_Callback();
+  }
   /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 0 */
 
   /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 1 */
