@@ -30,7 +30,10 @@ void SR04_Start_Measurement(sr04_t *me) {
 
 void SR04_Read_Measurement(sr04_t *me) {
     I2c1_Receive_nBytes(me->address, &(me->rawData[0]), 3);
-    me->actualData = calculateDistance(me->rawData[0], me->rawData[1], me->rawData[2]);
+    uint32_t measurement = calculateDistance(me->rawData[0], me->rawData[1], me->rawData[2]);
+    if(measurement != 0) {
+        me->actualData = measurement;
+    }
 }
 
 uint32_t SR04_Get_Measurement(sr04_t *me) {
@@ -41,6 +44,9 @@ uint32_t SR04_Get_Measurement(sr04_t *me) {
 static uint32_t calculateDistance(uint8_t byteH, uint8_t byteM, uint8_t byteL) {
     uint32_t result = (byteH << 16);
     result = result + (byteM << 8);
-    result = result + (byteL);
-    return result / 1000;
+    result = (result + (byteL)) / 1000;
+    if (result <= 20 || result >= 4500) {
+        result = 0;
+    }
+    return result;
 }
