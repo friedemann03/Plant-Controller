@@ -26,6 +26,7 @@
 #include "subsystem_gpio.h"
 #include "subsystem_i2c.h"
 #include "controller_led.h"
+#include "controller_tank.h"
 #include "usart.h"
 #include "log_module.h"
 #include "shell.h"
@@ -90,7 +91,6 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-
   /* USER CODE BEGIN 2 */
 
   Uart_Subsystem_Init();
@@ -104,7 +104,7 @@ int main(void)
 
   Shell_Init();
   Led_Controller_Init();
-  
+  Tank_Controller_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,6 +112,7 @@ int main(void)
   while (1)
   {
     Shell_Read_Function();
+    Tank_Controller_Update();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
