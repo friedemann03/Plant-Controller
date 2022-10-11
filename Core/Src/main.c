@@ -18,14 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "i2c.h"
-#include "tim.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "subsystem_uart.h"
 #include "subsystem_tim.h"
 #include "subsystem_gpio.h"
+#include "subsystem_i2c.h"
 #include "controller_led.h"
 #include "usart.h"
 #include "log_module.h"
@@ -91,8 +90,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_I2C1_Init();
-  MX_TIM11_Init();
+
   /* USER CODE BEGIN 2 */
 
   Uart_Subsystem_Init();
@@ -102,6 +100,8 @@ int main(void)
 
   Gpio_Subsystem_Init();
   Tim_Subsystem_Init();
+  I2c_Subsystem_Init();
+
   Shell_Init();
   Led_Controller_Init();
   

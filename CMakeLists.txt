@@ -80,6 +80,7 @@ list(APPEND SOURCES
         Core/Src/main.c
         Core/Src/gpio.c
         Core/Src/tim.c
+        Core/Src/i2c.c
         Core/Src/usart.c
         Core/Src/syscalls.c
         Core/Src/sysmem.c
