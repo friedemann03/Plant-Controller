@@ -9,10 +9,10 @@ void I2c_Subsystem_Init(void) {
     MX_I2C1_Init();
 }
 
-void I2c_Transfer_nBytes(uint8_t address, uint8_t *sendBuffer, uint8_t amount) {
+void I2c1_Transfer_nBytes(uint8_t address, uint8_t *sendBuffer, uint8_t amount) {
     HAL_I2C_Master_Transmit(&hi2c1, (uint16_t) address, sendBuffer, amount, 100);
 }
 
-void I2c_Receive_nBytes(uint8_t address, uint8_t *receiveBuffer, uint8_t amount) {
+void I2c1_Receive_nBytes(uint8_t address, uint8_t *receiveBuffer, uint8_t amount) {
     HAL_I2C_Master_Receive(&hi2c1, (uint16_t) address, receiveBuffer, amount, 100);
 }
