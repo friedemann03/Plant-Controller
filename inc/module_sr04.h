@@ -1,0 +1,8 @@
+//
+// Created by Friedemann Drepper on 11.10.22.
+//
+
+#ifndef PLANT_CONTROLLER_MODULE_SR04_H
+#define PLANT_CONTROLLER_MODULE_SR04_H
+
+#endif //PLANT_CONTROLLER_MODULE_SR04_H

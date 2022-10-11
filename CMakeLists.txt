@@ -74,6 +74,7 @@ list(APPEND SOURCES
         src/log_module.c
         src/shell.c
         src/module_led.c
+        src/module_sr04.c
         src/version.c
         Core/Src/main.c
         Core/Src/gpio.c
