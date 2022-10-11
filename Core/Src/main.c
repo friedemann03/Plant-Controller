@@ -28,6 +28,7 @@
 #include "usart.h"
 #include "log_module.h"
 #include "shell.h"
+#include "version.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,13 +92,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   Uart_Subsystem_Init();
+  Log_Module_Init();
 
-//  Log_Module_Init();
+  Reset_Log();
 
   Gpio_Subsystem_Init();
-
   Tim_Subsystem_Init();
-
   Shell_Init();
   Led_Controller_Init();
   
