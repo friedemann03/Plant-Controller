@@ -68,16 +68,20 @@ include_directories(
 
 list(APPEND SOURCES
         src/controller_led.c
+        src/controller_tank.c
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c
+        src/subsystem_i2c.c
         src/log_module.c
         src/shell.c
         src/module_led.c
+        src/module_sr04.c
         src/version.c
         Core/Src/main.c
         Core/Src/gpio.c
         Core/Src/tim.c
+        Core/Src/i2c.c
         Core/Src/usart.c
         Core/Src/syscalls.c
         Core/Src/sysmem.c

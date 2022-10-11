@@ -8,6 +8,7 @@
 /* Private includes ----------------------------------------------------------*/
 #include "subsystem_uart.h"
 #include "controller_led.h"
+#include "controller_tank.h"
 #include "log_module.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -39,6 +40,7 @@ CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
                     CONSOLE_INT_ARG_DEF(status, "1 - enable, 0 - disable"),
                     CONSOLE_INT_ARG_DEF(fastMode, "1 - fast, 0 - slow"));
 CONSOLE_COMMAND_DEF(dummy_log, "A dummy command, logging a simple message to make sure logging works.");
+CONSOLE_COMMAND_DEF(get_distance, "Logs the last measured distance from the distance sensor.");
 
 
 /**
@@ -54,6 +56,9 @@ static void dummy_log_command_handler(const dummy_log_args_t *args) {
     LOG_DEBUG("Logging works fine :)");
 }
 
+static void get_distance_command_handler(const get_distance_args_t *args) {
+    LOG_DEBUG("Measured distance: %u mm", (unsigned int) Tank_Controller_GetWaterLevel());
+}
 /**
  * @brief Write function implementation. This function is called by console.c when needed. To separate console output
  * from debugging output TERMINAL '1' instead of default '0' is used
@@ -80,4 +85,5 @@ void Shell_Init(void) {
     console_init(&debugConsole);
     console_command_register(led);
     console_command_register(dummy_log);
+    console_command_register(get_distance);
 }

@@ -24,7 +24,9 @@
 #include "subsystem_uart.h"
 #include "subsystem_tim.h"
 #include "subsystem_gpio.h"
+#include "subsystem_i2c.h"
 #include "controller_led.h"
+#include "controller_tank.h"
 #include "usart.h"
 #include "log_module.h"
 #include "shell.h"
@@ -98,9 +100,11 @@ int main(void)
 
   Gpio_Subsystem_Init();
   Tim_Subsystem_Init();
+  I2c_Subsystem_Init();
+
   Shell_Init();
   Led_Controller_Init();
-  
+  Tank_Controller_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,6 +112,7 @@ int main(void)
   while (1)
   {
     Shell_Read_Function();
+    Tank_Controller_Update();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

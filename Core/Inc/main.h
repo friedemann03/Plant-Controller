@@ -83,6 +83,10 @@ void Error_Handler(void);
 #define TCK_GPIO_Port GPIOA
 #define SWO_Pin LL_GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define US_SCL_Pin LL_GPIO_PIN_8
+#define US_SCL_GPIO_Port GPIOB
+#define US_SDA_Pin LL_GPIO_PIN_9
+#define US_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
