@@ -48,12 +48,8 @@ void Display_Controller_Cycle(void) {
     display_print[currentPrintFunction]();
 }
 
-void Display_Controller_TurnOff(void) {
-    Lcd_TurnOff_Display(&lcdScreen);
-}
-
-void Display_Controller_TurnOn(void) {
-    Lcd_TurnOn_Display(&lcdScreen);
+void Display_Controller_Enable(bool status) {
+    Lcd_Enable(&lcdScreen, status);
 }
 
 /* Private Functions ---------------------------------------------------------*/
@@ -64,15 +60,10 @@ static void test_function(void) {
     Lcd_Send_String(&lcdScreen, "second line   <-");
 
     HAL_Delay(5000);
-
     Lcd_TurnOff_Display(&lcdScreen);
-
     HAL_Delay(5000);
-
     Lcd_TurnOn_Display(&lcdScreen);
-
     HAL_Delay(1000);
-
     Lcd_Clear(&lcdScreen);
 }
 
@@ -96,6 +87,9 @@ static void print_WaterLevel(void) {
 static void print_HelloWorld(void) {
     char line[LINE_LENGTH] = "Hello,World!";
     Lcd_Set_Line(&lcdScreen, 0);
+    Lcd_Send_String(&lcdScreen, line);
+    sprintf(line, "");
+    Lcd_Set_Line(&lcdScreen, 1);
     Lcd_Send_String(&lcdScreen, line);
 }
 

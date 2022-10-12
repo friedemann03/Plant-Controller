@@ -82,14 +82,14 @@ void Lcd_Init(lcdScreen_t *me, uint8_t i2cAddress){
     lcd_setup_defaults(me);
 }
 
-void Lcd_TurnOff_Display(lcdScreen_t *me) {
-    me->message.bit.backlight = 0;
-    lcd_write_ir(me, LCD_DISPLAYCONTROL | LCD_DISPLAYOFF);
-}
-
-void Lcd_TurnOn_Display(lcdScreen_t *me) {
-    me->message.bit.backlight = 1;
-    lcd_write_ir(me, LCD_DISPLAYCONTROL | LCD_DISPLAYON);
+void Lcd_Enable(lcdScreen_t *me, bool status) {
+    if(status) {
+        me->message.bit.backlight = 1;
+        lcd_write_ir(me, LCD_DISPLAYCONTROL | LCD_DISPLAYON);
+    } else {
+        me->message.bit.backlight = 0;
+        lcd_write_ir(me, LCD_DISPLAYCONTROL | LCD_DISPLAYOFF);
+    }
 }
 
 void Lcd_Clear(lcdScreen_t *me) {
