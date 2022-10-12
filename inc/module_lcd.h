@@ -58,8 +58,6 @@ void Lcd_Set_Line(lcdScreen_t *me, uint8_t line);
 
 void Lcd_Clear(lcdScreen_t *me);
 
-void Lcd_TurnOff_Display(lcdScreen_t *me);
-
-void Lcd_TurnOn_Display(lcdScreen_t *me);
+void Lcd_Enable(lcdScreen_t *me, bool status);
 
 #endif //PLANT_CONTROLLER_MODULE_LCD_H

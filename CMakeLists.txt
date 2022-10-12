@@ -69,6 +69,7 @@ include_directories(
 list(APPEND SOURCES
         src/controller_led.c
         src/controller_tank.c
+        src/controller_display.c
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c

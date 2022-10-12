@@ -27,7 +27,7 @@
 #include "subsystem_i2c.h"
 #include "controller_led.h"
 #include "controller_tank.h"
-#include "usart.h"
+#include "controller_display.h"
 #include "log_module.h"
 #include "shell.h"
 #include "version.h"
@@ -105,6 +105,7 @@ int main(void)
   Shell_Init();
   Led_Controller_Init();
   Tank_Controller_Init();
+  Display_Controller_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
