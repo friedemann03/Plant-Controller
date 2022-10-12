@@ -68,29 +68,32 @@ static void test_function(void) {
 }
 
 static void print_Moisture(void) {
-    char line[LINE_LENGTH] = "Moisture Level:";
+    char lines[2][LINE_LENGTH] = {"Moisture Level:", ""};
+    sprintf(lines[1], "Not Implemented");
+
     Lcd_Set_Line(&lcdScreen, 0);
-    Lcd_Send_String(&lcdScreen, line);
-    sprintf(line, "Not Implemented");
+    Lcd_Send_String(&lcdScreen, lines[0]);
     Lcd_Set_Line(&lcdScreen, 1);
-    Lcd_Send_String(&lcdScreen, line);
+    Lcd_Send_String(&lcdScreen, lines[1]);
 }
 static void print_WaterLevel(void) {
     uint32_t currentWaterLevel = Tank_Controller_GetWaterLevel();
-    char line[LINE_LENGTH] = "Water Level:";
+    char lines[2][LINE_LENGTH] = {"Water Level:", ""};
+    sprintf(lines[1], "%u mm", (unsigned int) currentWaterLevel);
+
     Lcd_Set_Line(&lcdScreen, 0);
-    Lcd_Send_String(&lcdScreen, line);
-    sprintf(line, "%u mm", (unsigned int) currentWaterLevel);
+    Lcd_Send_String(&lcdScreen, lines[0]);
     Lcd_Set_Line(&lcdScreen, 1);
-    Lcd_Send_String(&lcdScreen, line);
+    Lcd_Send_String(&lcdScreen, lines[1]);
 }
 static void print_HelloWorld(void) {
-    char line[LINE_LENGTH] = "Hello,World!";
+    char lines[2][LINE_LENGTH] = {"Hello World :)", ""};
+    sprintf(lines[1], "");
+
     Lcd_Set_Line(&lcdScreen, 0);
-    Lcd_Send_String(&lcdScreen, line);
-    sprintf(line, "");
+    Lcd_Send_String(&lcdScreen, lines[0]);
     Lcd_Set_Line(&lcdScreen, 1);
-    Lcd_Send_String(&lcdScreen, line);
+    Lcd_Send_String(&lcdScreen, lines[1]);
 }
 
 void Exti_15_10_Callback(void) {
