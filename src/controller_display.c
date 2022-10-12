@@ -60,9 +60,9 @@ static void test_function(void) {
     Lcd_Send_String(&lcdScreen, "second line   <-");
 
     HAL_Delay(5000);
-    Lcd_TurnOff_Display(&lcdScreen);
+    Lcd_Enable(&lcdScreen, false);
     HAL_Delay(5000);
-    Lcd_TurnOn_Display(&lcdScreen);
+    Lcd_Enable(&lcdScreen, true);
     HAL_Delay(1000);
     Lcd_Clear(&lcdScreen);
 }

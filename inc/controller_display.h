@@ -11,8 +11,6 @@ void Display_Controller_Init(void);
 
 void Display_Controller_Cycle(void);
 
-void Display_Controller_TurnOff(void);
-
-void Display_Controller_TurnOn(void);
+void Display_Controller_Enable(bool status);
 
 #endif //PLANT_CONTROLLER_CONTROLLER_DISPLAY_H
