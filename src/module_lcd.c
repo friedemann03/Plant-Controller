@@ -90,11 +90,12 @@ void Lcd_Enable(lcdScreen_t *me, bool status) {
         me->message.bit.backlight = 0;
         lcd_write_ir(me, LCD_DISPLAYCONTROL | LCD_DISPLAYOFF);
     }
+    LL_mDelay(1);
 }
 
 void Lcd_Clear(lcdScreen_t *me) {
     lcd_write_ir(me, LCD_CLEARDISPLAY);
-    LL_mDelay(1);
+    LL_mDelay(5);
 }
 
 void Lcd_Set_Line(lcdScreen_t *me, uint8_t line) {
@@ -118,6 +119,7 @@ void Lcd_Send_String(lcdScreen_t *me, const char *string) {
     }
     for (; i < LCD_COLUMN_AMOUNT; i++) { // fill rest of line with spaces
         lcd_write_dr(me, ' ');
+        LL_mDelay(1);
     }
 }
 
