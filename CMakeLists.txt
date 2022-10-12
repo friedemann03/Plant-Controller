@@ -77,6 +77,7 @@ list(APPEND SOURCES
         src/shell.c
         src/module_led.c
         src/module_sr04.c
+        src/module_lcd.c
         src/version.c
         Core/Src/main.c
         Core/Src/gpio.c
