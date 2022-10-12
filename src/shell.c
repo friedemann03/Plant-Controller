@@ -43,6 +43,8 @@ CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
 CONSOLE_COMMAND_DEF(dummy_log, "A dummy command, logging a simple message to make sure logging works.");
 CONSOLE_COMMAND_DEF(get_distance, "Logs the last measured distance from the distance sensor.");
 CONSOLE_COMMAND_DEF(cycle_display, "Cycles information displayed on display.");
+CONSOLE_COMMAND_DEF(toggle_display, "Turns display on or off.",
+                    CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
 
 
 /**
@@ -64,6 +66,10 @@ static void get_distance_command_handler(const get_distance_args_t *args) {
 
 static void cycle_display_command_handler(const cycle_display_args_t *args) {
     Display_Controller_Cycle();
+}
+
+static void toggle_display_command_handler(const toggle_display_args_t *args) {
+    Display_Controller_Enable(args->status);
 }
 
 
@@ -95,4 +101,5 @@ void Shell_Init(void) {
     console_command_register(dummy_log);
     console_command_register(get_distance);
     console_command_register(cycle_display);
+    console_command_register(toggle_display);
 }
