@@ -70,6 +70,10 @@ list(APPEND SOURCES
         src/controller_led.c
         src/controller_tank.c
         src/controller_display.c
+        src/module_led.c
+        src/module_sr04.c
+        src/module_lcd.c
+        src/module_moisture.c
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c
@@ -77,9 +81,6 @@ list(APPEND SOURCES
         src/subsystem_adc.c
         src/log_module.c
         src/shell.c
-        src/module_led.c
-        src/module_sr04.c
-        src/module_lcd.c
         src/version.c
         Core/Src/main.c
         Core/Src/gpio.c
