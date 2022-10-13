@@ -10,7 +10,7 @@
 
 void Adc_Subsystem_Init(void);
 
-uint16_t Adc_Get_Value(void);
+uint16_t Adc_Get_Value(uint8_t channel);
 
 
 #endif //PLANT_CONTROLLER_SUBSYSTEM_ADC_H
