@@ -25,6 +25,7 @@
 #include "subsystem_tim.h"
 #include "subsystem_gpio.h"
 #include "subsystem_i2c.h"
+#include "subsystem_adc.h"
 #include "controller_led.h"
 #include "controller_tank.h"
 #include "controller_display.h"
@@ -101,6 +102,7 @@ int main(void)
   Gpio_Subsystem_Init();
   Tim_Subsystem_Init();
   I2c_Subsystem_Init();
+  Adc_Subsystem_Init();
 
   Shell_Init();
   Led_Controller_Init();
