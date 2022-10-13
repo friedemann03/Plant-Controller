@@ -70,6 +70,7 @@ list(APPEND SOURCES
         src/controller_led.c
         src/controller_tank.c
         src/controller_display.c
+        src/controller_soil.c
         src/module_led.c
         src/module_sr04.c
         src/module_lcd.c
