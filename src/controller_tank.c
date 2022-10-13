@@ -16,6 +16,8 @@
 static sr04_t distanceSensor;
 static volatile bool isCurrentMeasurementDone = true;
 
+static volatile uint32_t emptyLimit = 0;
+
 /* Public Functions ------------------------------------------------------------*/
 void Tank_Controller_Init(void) {
     Tim_EnableIRQ(false, TIMER_11);
@@ -36,6 +38,16 @@ void Tank_Controller_Update(void) {
 uint32_t Tank_Controller_GetWaterLevel(void) {
     uint32_t result = SR04_Get_Measurement(&distanceSensor);
     return result; // NOT CORRECT, RETURN DISTANCE TO WATER, NOT WATER LEVEL
+}
+
+
+/* Get and Set Functions --------------------------------------------------------*/
+uint32_t Tank_Controller_Get_EmptyLimit(void) {
+    return emptyLimit;
+}
+
+void Tank_Controller_Set_EmptyLimit(uint32_t newEmptyLimit) {
+    emptyLimit = newEmptyLimit;
 }
 
 /* Callback function ------------------------------------------------------------*/
