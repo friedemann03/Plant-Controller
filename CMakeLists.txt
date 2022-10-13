@@ -75,6 +75,7 @@ list(APPEND SOURCES
         src/module_sr04.c
         src/module_lcd.c
         src/module_moisture.c
+        src/module_pump.c
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c
