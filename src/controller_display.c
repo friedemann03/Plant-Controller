@@ -9,6 +9,7 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "controller_tank.h"
+#include "controller_soil.h"
 #include "subsystem_gpio.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,8 +69,9 @@ static void test_function(void) {
 }
 
 static void print_Moisture(void) {
-    char lines[2][LINE_LENGTH] = {"Moisture Level:", ""};
-    sprintf(lines[1], "Not Implemented");
+    uint32_t currentSoilMoisture = Soil_Controller_GetSoilMoisture();
+    char lines[2][LINE_LENGTH] = {"Soil Moisture:", ""};
+    sprintf(lines[1], "%u", (unsigned int) currentSoilMoisture);
 
     Lcd_Set_Line(&lcdScreen, 0);
     Lcd_Send_String(&lcdScreen, lines[0]);
