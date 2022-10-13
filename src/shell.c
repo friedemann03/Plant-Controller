@@ -8,6 +8,8 @@
 /* Private includes ----------------------------------------------------------*/
 #include "subsystem_uart.h"
 #include "controller_led.h"
+#include "controller_tank.h"
+#include "controller_display.h"
 #include "log_module.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -39,6 +41,10 @@ CONSOLE_COMMAND_DEF(led, "Enable and disable blinking of led",
                     CONSOLE_INT_ARG_DEF(status, "1 - enable, 0 - disable"),
                     CONSOLE_INT_ARG_DEF(fastMode, "1 - fast, 0 - slow"));
 CONSOLE_COMMAND_DEF(dummy_log, "A dummy command, logging a simple message to make sure logging works.");
+CONSOLE_COMMAND_DEF(get_distance, "Logs the last measured distance from the distance sensor.");
+CONSOLE_COMMAND_DEF(cycle_display, "Cycles information displayed on display.");
+CONSOLE_COMMAND_DEF(toggle_display, "Turns display on or off.",
+                    CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
 
 
 /**
@@ -53,6 +59,19 @@ static void led_command_handler(const led_args_t *args) {
 static void dummy_log_command_handler(const dummy_log_args_t *args) {
     LOG_DEBUG("Logging works fine :)");
 }
+
+static void get_distance_command_handler(const get_distance_args_t *args) {
+    LOG_DEBUG("Measured distance: %u mm", (unsigned int) Tank_Controller_GetWaterLevel());
+}
+
+static void cycle_display_command_handler(const cycle_display_args_t *args) {
+    Display_Controller_Cycle();
+}
+
+static void toggle_display_command_handler(const toggle_display_args_t *args) {
+    Display_Controller_Enable(args->status);
+}
+
 
 /**
  * @brief Write function implementation. This function is called by console.c when needed. To separate console output
@@ -80,4 +99,7 @@ void Shell_Init(void) {
     console_init(&debugConsole);
     console_command_register(led);
     console_command_register(dummy_log);
+    console_command_register(get_distance);
+    console_command_register(cycle_display);
+    console_command_register(toggle_display);
 }
