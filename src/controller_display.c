@@ -31,6 +31,8 @@ static void print_Moisture(void);
 static void print_WaterLevel(void);
 static void print_HelloWorld(void);
 
+static void helper_printLine(uint32_t line, const char *string);
+
 /* External variables --------------------------------------------------------*/
 
 /* Public Functions ----------------------------------------------------------*/
@@ -73,29 +75,28 @@ static void print_Moisture(void) {
     char lines[2][LINE_LENGTH] = {"Soil Moisture:", ""};
     sprintf(lines[1], "%u", (unsigned int) currentSoilMoisture);
 
-    Lcd_Set_Line(&lcdScreen, 0);
-    Lcd_Send_String(&lcdScreen, lines[0]);
-    Lcd_Set_Line(&lcdScreen, 1);
-    Lcd_Send_String(&lcdScreen, lines[1]);
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
 }
 static void print_WaterLevel(void) {
     uint32_t currentWaterLevel = Tank_Controller_GetWaterLevel();
     char lines[2][LINE_LENGTH] = {"Water Level:", ""};
     sprintf(lines[1], "%u mm", (unsigned int) currentWaterLevel);
 
-    Lcd_Set_Line(&lcdScreen, 0);
-    Lcd_Send_String(&lcdScreen, lines[0]);
-    Lcd_Set_Line(&lcdScreen, 1);
-    Lcd_Send_String(&lcdScreen, lines[1]);
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
 }
 static void print_HelloWorld(void) {
     char lines[2][LINE_LENGTH] = {"Hello World :)", ""};
     sprintf(lines[1], "");
 
-    Lcd_Set_Line(&lcdScreen, 0);
-    Lcd_Send_String(&lcdScreen, lines[0]);
-    Lcd_Set_Line(&lcdScreen, 1);
-    Lcd_Send_String(&lcdScreen, lines[1]);
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
+}
+
+static void helper_printLine(uint32_t line, const char *string) {
+    Lcd_Set_Line(&lcdScreen, line);
+    Lcd_Send_String(&lcdScreen, string);
 }
 
 void Exti_15_10_Callback(void) {
