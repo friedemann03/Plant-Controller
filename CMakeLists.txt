@@ -74,6 +74,7 @@ list(APPEND SOURCES
         src/subsystem_gpio.c
         src/subsystem_uart.c
         src/subsystem_i2c.c
+        src/subsystem_adc.c
         src/log_module.c
         src/shell.c
         src/module_led.c
@@ -84,6 +85,7 @@ list(APPEND SOURCES
         Core/Src/gpio.c
         Core/Src/tim.c
         Core/Src/i2c.c
+        Core/Src/adc.c
         Core/Src/usart.c
         Core/Src/syscalls.c
         Core/Src/sysmem.c
