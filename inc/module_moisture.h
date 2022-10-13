@@ -7,7 +7,7 @@
 
 #include "subsystem_adc.h"
 
-#define ADC_MOISTURE_CHANNEL 1
+#define MOISTURE_ADC_CHANNEL 1
 
 typedef struct {
     uint16_t currentValue;

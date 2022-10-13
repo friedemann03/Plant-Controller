@@ -29,6 +29,7 @@
 #include "controller_led.h"
 #include "controller_tank.h"
 #include "controller_display.h"
+#include "controller_soil.h"
 #include "log_module.h"
 #include "shell.h"
 #include "version.h"
@@ -108,6 +109,7 @@ int main(void)
   Led_Controller_Init();
   Tank_Controller_Init();
   Display_Controller_Init();
+  Soil_Controller_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,6 +118,7 @@ int main(void)
   {
     Shell_Read_Function();
     Tank_Controller_Update();
+    Soil_Controller_Update();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
