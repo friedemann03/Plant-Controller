@@ -35,24 +35,49 @@ void Gpio_Subsystem_Init(void) {
 }
 
 void Gpio_Subsystem_DeInit(void) {
-    GPIO_InitTypeDef GPIO_InitStruct;
 
-    /* Configure all GPIO as analog to reduce current consumption on non used IOs */
+    /* Configure all GPIO as analog to reduce current consumption on non-used IOs */
     /* Enable GPIOs clock */
-    /* Warning : Reconfiguring all GPIO will close the connection with the debugger */
+    /* Warning : Reconfiguring all GPIO will close the connection with the debugger, therefore i am leaving out the JTag Pins (PA13, PA14, PB3) */
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOH_CLK_ENABLE();
 
-    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Pin = GPIO_PIN_All;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+    LL_GPIO_InitTypeDef GPIO_InitStruct_LL;
+    /* Custom DeInit, leaving out the JTag pins (PA13 and P14) */
+    GPIO_InitStruct_LL.Pin = LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_2|LL_GPIO_PIN_3
+                            |LL_GPIO_PIN_4|LL_GPIO_PIN_5|LL_GPIO_PIN_6|LL_GPIO_PIN_7
+                            |LL_GPIO_PIN_8|LL_GPIO_PIN_9|LL_GPIO_PIN_10|LL_GPIO_PIN_11
+                            |LL_GPIO_PIN_12/*|LL_GPIO_PIN_13|LL_GPIO_PIN_14*/|LL_GPIO_PIN_15;
+    GPIO_InitStruct_LL.Mode = LL_GPIO_MODE_ANALOG;
+    GPIO_InitStruct_LL.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOA, &GPIO_InitStruct_LL);
+
+    /* Custom DeInit, leaving out the JTag pins (PB3) */
+    GPIO_InitStruct_LL.Pin = LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_2/*|LL_GPIO_PIN_3*/
+                            |LL_GPIO_PIN_4|LL_GPIO_PIN_5|LL_GPIO_PIN_6|LL_GPIO_PIN_7
+                            |LL_GPIO_PIN_8|LL_GPIO_PIN_9|LL_GPIO_PIN_10|LL_GPIO_PIN_11
+                            |LL_GPIO_PIN_12|LL_GPIO_PIN_13|LL_GPIO_PIN_14|LL_GPIO_PIN_15;
+    GPIO_InitStruct_LL.Mode = LL_GPIO_MODE_ANALOG;
+    GPIO_InitStruct_LL.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOB, &GPIO_InitStruct_LL);
+
+    GPIO_InitStruct_LL.Pin = LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_2|LL_GPIO_PIN_3
+                             |LL_GPIO_PIN_4|LL_GPIO_PIN_5|LL_GPIO_PIN_6|LL_GPIO_PIN_7
+                             |LL_GPIO_PIN_8|LL_GPIO_PIN_9|LL_GPIO_PIN_10|LL_GPIO_PIN_11
+                             |LL_GPIO_PIN_12|LL_GPIO_PIN_13|LL_GPIO_PIN_14|LL_GPIO_PIN_15;
+    GPIO_InitStruct_LL.Mode = LL_GPIO_MODE_ANALOG;
+    GPIO_InitStruct_LL.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOC, &GPIO_InitStruct_LL);
+
+    GPIO_InitStruct_LL.Pin = LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_2|LL_GPIO_PIN_3
+                             |LL_GPIO_PIN_4|LL_GPIO_PIN_5|LL_GPIO_PIN_6|LL_GPIO_PIN_7
+                             |LL_GPIO_PIN_8|LL_GPIO_PIN_9|LL_GPIO_PIN_10|LL_GPIO_PIN_11
+                             |LL_GPIO_PIN_12|LL_GPIO_PIN_13|LL_GPIO_PIN_14|LL_GPIO_PIN_15;
+    GPIO_InitStruct_LL.Mode = LL_GPIO_MODE_ANALOG;
+    GPIO_InitStruct_LL.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOH, &GPIO_InitStruct_LL);
 
     /* Disable GPIOs clock */
     __HAL_RCC_GPIOA_CLK_DISABLE();
