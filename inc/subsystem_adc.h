@@ -10,6 +10,8 @@
 
 void Adc_Subsystem_Init(void);
 
+void Adc_Subsystem_DeInit(void);
+
 uint16_t Adc_Get_Value(uint8_t channel);
 
 

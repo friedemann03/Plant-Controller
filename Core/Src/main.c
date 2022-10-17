@@ -26,6 +26,7 @@
 #include "subsystem_gpio.h"
 #include "subsystem_i2c.h"
 #include "subsystem_adc.h"
+#include "subsystem_rtc.h"
 #include "controller_led.h"
 #include "controller_tank.h"
 #include "controller_display.h"
@@ -104,6 +105,7 @@ int main(void)
   Tim_Subsystem_Init();
   I2c_Subsystem_Init();
   Adc_Subsystem_Init();
+  Rtc_Subsystem_Init();
 
   Shell_Init();
   Led_Controller_Init();
@@ -144,6 +146,14 @@ void SystemClock_Config(void)
 
    /* Wait till HSI is ready */
   while(LL_RCC_HSI_IsReady() != 1)
+  {
+
+  }
+  LL_PWR_EnableBkUpAccess();
+  LL_RCC_LSE_Enable();
+
+   /* Wait till LSE is ready */
+  while(LL_RCC_LSE_IsReady() != 1)
   {
 
   }
