@@ -82,6 +82,7 @@ list(APPEND SOURCES
         src/subsystem_uart.c
         src/subsystem_i2c.c
         src/subsystem_adc.c
+        src/subsystem_rtc.c
         src/log_module.c
         src/shell.c
         src/version.c
@@ -90,6 +91,7 @@ list(APPEND SOURCES
         Core/Src/tim.c
         Core/Src/i2c.c
         Core/Src/adc.c
+        Core/Src/rtc.c
         Core/Src/usart.c
         Core/Src/syscalls.c
         Core/Src/sysmem.c

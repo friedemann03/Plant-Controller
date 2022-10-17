@@ -1,0 +1,8 @@
+//
+// Created by Friedemann Drepper on 17.10.22.
+//
+
+#ifndef PLANT_CONTROLLER_SUBSYSTEM_RTC_H
+#define PLANT_CONTROLLER_SUBSYSTEM_RTC_H
+
+#endif //PLANT_CONTROLLER_SUBSYSTEM_RTC_H
