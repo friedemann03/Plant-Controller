@@ -11,6 +11,7 @@
 #include "controller_tank.h"
 #include "controller_soil.h"
 #include "subsystem_gpio.h"
+#include "subsystem_rtc.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -88,7 +89,8 @@ static void print_WaterLevel(void) {
 }
 static void print_HelloWorld(void) {
     char lines[2][LINE_LENGTH] = {"Hello World :)", ""};
-    sprintf(lines[1], "");
+    sTime_t time = Rtc_Get_Time();
+    sprintf(lines[1], "Time: %d-%d-%d", time.hours, time.minutes, time.seconds);
 
     helper_printLine(0, lines[0]);
     helper_printLine(1, lines[1]);

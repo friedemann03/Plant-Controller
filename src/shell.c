@@ -12,6 +12,7 @@
 #include "controller_display.h"
 #include "controller_soil.h"
 #include "controller_power.h"
+#include "subsystem_rtc.h"
 #include "log_module.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,7 +50,7 @@ CONSOLE_COMMAND_DEF(cycle_display, "Cycles information displayed on display.");
 CONSOLE_COMMAND_DEF(toggle_display, "Turns display on or off.",
                     CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
 CONSOLE_COMMAND_DEF(enter_STOPMode, "Enters STOP Mode, can be woken up by pressing the USER Button.");
-
+CONSOLE_COMMAND_DEF(get_time, "Logs the current time of the RTC.");
 
 /**
  * @brief LED command handler.
@@ -89,6 +90,10 @@ static void enter_STOPMode_command_handler(const enter_STOPMode_args_t *args) {
     Tank_Controller_Init();
 }
 
+static void get_time_command_handler(const get_time_args_t *args) {
+    sTime_t time = Rtc_Get_Time();
+    LOG_DEBUG("Current RTC Time: %d-%d-%d", time.hours, time.minutes, time.seconds);
+}
 
 /**
  * @brief Write function implementation. This function is called by console.c when needed. To separate console output
@@ -121,4 +126,5 @@ void Shell_Init(void) {
     console_command_register(cycle_display);
     console_command_register(toggle_display);
     console_command_register(enter_STOPMode);
+    console_command_register(get_time);
 }
