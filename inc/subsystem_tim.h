@@ -31,6 +31,8 @@
 /* Exported functions prototypes ---------------------------------------------*/
 void Tim_Subsystem_Init(void);
 
+void Tim_Subsystem_DeInit(void);
+
 void Tim_Enable(bool status, uint32_t index);
 
 void Tim_EnableIRQ(bool status, uint32_t timerIRQn);

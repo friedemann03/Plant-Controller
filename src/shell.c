@@ -11,6 +11,7 @@
 #include "controller_tank.h"
 #include "controller_display.h"
 #include "controller_soil.h"
+#include "controller_power.h"
 #include "log_module.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +48,7 @@ CONSOLE_COMMAND_DEF(get_moisture, "Logs the last measured soil moisture from the
 CONSOLE_COMMAND_DEF(cycle_display, "Cycles information displayed on display.");
 CONSOLE_COMMAND_DEF(toggle_display, "Turns display on or off.",
                     CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
+CONSOLE_COMMAND_DEF(enter_STOPMode, "Enters STOP Mode, can be woken up by pressing the USER Button.");
 
 
 /**
@@ -76,6 +78,15 @@ static void toggle_display_command_handler(const toggle_display_args_t *args) {
 
 static void get_moisture_command_handler(const get_moisture_args_t *args) {
     LOG_DEBUG("Measured soil moisture: %u", (unsigned int) Soil_Controller_GetSoilMoisture());
+}
+
+static void enter_STOPMode_command_handler(const enter_STOPMode_args_t *args) {
+    LOG_DEBUG("Entering STOP Mode.");
+    Power_Controller_StopMode();
+    LOG_DEBUG("Exiting STOP Mode");
+    /* Reinitialize all Controllers that use Interrupts */
+    Led_Controller_Init();
+    Tank_Controller_Init();
 }
 
 
@@ -109,4 +120,5 @@ void Shell_Init(void) {
     console_command_register(get_moisture);
     console_command_register(cycle_display);
     console_command_register(toggle_display);
+    console_command_register(enter_STOPMode);
 }

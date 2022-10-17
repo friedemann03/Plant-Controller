@@ -34,6 +34,11 @@ void Tim_Subsystem_Init(void) {
     MX_TIM11_Init();
 }
 
+void Tim_Subsystem_DeInit(void) {
+    LL_TIM_DeInit(TIM10);
+    LL_TIM_DeInit(TIM11);
+}
+
 
 void Tim_Enable(bool status, const uint32_t index) {
     if(status) {
