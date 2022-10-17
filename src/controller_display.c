@@ -12,6 +12,7 @@
 #include "controller_soil.h"
 #include "subsystem_gpio.h"
 #include "subsystem_rtc.h"
+#include "subsystem_tim.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -38,12 +39,14 @@ static void helper_printLine(uint32_t line, const char *string);
 
 /* Public Functions ----------------------------------------------------------*/
 void Display_Controller_Init(void) {
+    Tim_EnableIRQ(false, TIMER_2);
     Lcd_Init(&lcdScreen, PCF8574_ADDR7);
     display_print[0] = print_HelloWorld;
     display_print[1] = print_Moisture;
     display_print[2] = print_WaterLevel;
 
-    display_print[currentPrintFunction]();
+    Tim_EnableIRQ(true, TIMER_2);
+    Tim_Enable(true, TIMER_2);
 }
 
 void Display_Controller_Cycle(void) {
@@ -54,6 +57,8 @@ void Display_Controller_Cycle(void) {
 
 void Display_Controller_Enable(bool status) {
     Lcd_Enable(&lcdScreen, status);
+    Tim_EnableIRQ(status, TIMER_2);
+    Tim_Enable(status, TIMER_2);
 }
 
 /* Private Functions ---------------------------------------------------------*/
@@ -99,6 +104,10 @@ static void print_HelloWorld(void) {
 static void helper_printLine(uint32_t line, const char *string) {
     Lcd_Set_Line(&lcdScreen, line);
     Lcd_Send_String(&lcdScreen, string);
+}
+
+void Tim_2_Callback(void) {
+    display_print[currentPrintFunction]();
 }
 
 void Exti_15_10_Callback(void) {
