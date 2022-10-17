@@ -9,6 +9,10 @@ void Adc_Subsystem_Init(void) {
     MX_ADC1_Init();
 }
 
+void Adc_Subsystem_DeInit(void) {
+    HAL_ADC_DeInit(&hadc1);
+}
+
 
 uint16_t Adc_Get_Value(uint8_t channel) {
     if (channel == 1) {

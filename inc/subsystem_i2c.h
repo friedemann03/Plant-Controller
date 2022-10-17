@@ -9,6 +9,8 @@
 
 void I2c_Subsystem_Init(void);
 
+void I2c_Subsystem_DeInit(void);
+
 void I2c1_Transfer_nBytes(uint8_t address, uint8_t *sendBuffer, uint8_t amount);
 
 void I2c1_Receive_nBytes(uint8_t address, uint8_t *receiveBuffer, uint8_t amount);

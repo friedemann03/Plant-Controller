@@ -45,6 +45,8 @@
 /* Exported functions prototypes ---------------------------------------------*/
 void Gpio_Subsystem_Init(void);
 
+void Gpio_Subsystem_DeInit(void);
+
 void Gpio_Set_Output_Pin(uint32_t port, uint32_t pinMask);
 
 void Gpio_Reset_Output_Pin(uint32_t port, uint32_t pinMask);

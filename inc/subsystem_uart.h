@@ -10,6 +10,8 @@
 
 void Uart_Subsystem_Init(void);
 
+void Uart_Subsystem_DeInit(void);
+
 void Uart_Send_String(uint8_t *string);
 
 bool Uart_Receive_Char(uint8_t *character);
