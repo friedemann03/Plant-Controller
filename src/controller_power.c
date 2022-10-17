@@ -81,6 +81,5 @@ void Power_Controller_StopMode(void) {
     /* Reinitialize all Controllers that use Interrupts */
     Led_Controller_Init();
     Tank_Controller_Init();
-
-    LOG_INFO("System woke up from STOP Mode");
+    
 }
