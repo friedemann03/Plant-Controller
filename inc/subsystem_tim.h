@@ -37,6 +37,8 @@ void Tim_Enable(bool status, uint32_t index);
 
 void Tim_EnableIRQ(bool status, uint32_t timerIRQn);
 
+__attribute__((weak)) void Tim_1_Callback(void);
+
 __attribute__((weak)) void Tim_10_Callback(void);
 
 __attribute__((weak)) void Tim_11_Callback(void);

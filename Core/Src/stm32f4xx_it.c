@@ -241,6 +241,11 @@ void TIM1_UP_TIM10_IRQHandler(void)
         LL_TIM_ClearFlag_UPDATE(TIM10);
         Tim_10_Callback();
     }
+
+    if (LL_TIM_IsActiveFlag_UPDATE(TIM1)) {
+        LL_TIM_ClearFlag_UPDATE(TIM1);
+        Tim_1_Callback();
+    }
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
 
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
@@ -263,6 +268,19 @@ void TIM1_TRG_COM_TIM11_IRQHandler(void)
   /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 1 */
 
   /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM2 global interrupt.
+  */
+void TIM2_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM2_IRQn 0 */
+
+  /* USER CODE END TIM2_IRQn 0 */
+  /* USER CODE BEGIN TIM2_IRQn 1 */
+
+  /* USER CODE END TIM2_IRQn 1 */
 }
 
 /**
