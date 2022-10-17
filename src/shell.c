@@ -84,6 +84,9 @@ static void enter_STOPMode_command_handler(const enter_STOPMode_args_t *args) {
     LOG_DEBUG("Entering STOP Mode.");
     Power_Controller_StopMode();
     LOG_DEBUG("Exiting STOP Mode");
+    /* Reinitialize all Controllers that use Interrupts */
+    Led_Controller_Init();
+    Tank_Controller_Init();
 }
 
 

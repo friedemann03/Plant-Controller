@@ -77,9 +77,5 @@ void Power_Controller_StopMode(void) {
     Tim_Subsystem_Init();
     Adc_Subsystem_Init();
     I2c_Subsystem_Init();
-
-    /* Reinitialize all Controllers that use Interrupts */
-    Led_Controller_Init();
-    Tank_Controller_Init();
     
 }
