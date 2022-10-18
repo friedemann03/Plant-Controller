@@ -23,6 +23,7 @@ void Tank_Controller_Init(void) {
     Tim_EnableIRQ(false, TIMER_11);
     Tim_Enable(false, TIMER_11);
     SR04_Init(&distanceSensor, SENSOR_I2C_ADDRESS);
+    isCurrentMeasurementDone = true;
 }
 
 void Tank_Controller_Update(void) {
