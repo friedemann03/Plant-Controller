@@ -30,3 +30,14 @@ sTime_t Rtc_Get_Time(void) {
 
     return time;
 }
+
+void Rtc_Set_Time(sTime_t time) {
+    RTC_TimeTypeDef newTime;
+    newTime.Hours = time.hours;
+    newTime.Minutes = time.minutes;
+    newTime.Seconds = time.seconds;
+    newTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+    newTime.TimeFormat = RTC_HOURFORMAT_24;
+
+    HAL_RTC_SetTime(&hrtc, &newTime, RTC_FORMAT_BIN);
+}
