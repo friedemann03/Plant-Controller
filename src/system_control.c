@@ -182,8 +182,11 @@ STATIC void Enter_New_State(eState newState) {
             Led_Controller_Enable(true);
             break;
         case STATE_SYSTEM_ERROR:
+#ifndef UNIT_TESTS
             LOG_ERROR(CTRL_TEXT_BRIGHT_RED "SYSTEM FAILURE" CTRL_RESET);
+#endif
             break;
+
         default:
             break;
     }
