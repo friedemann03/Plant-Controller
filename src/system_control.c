@@ -33,9 +33,10 @@ STATIC bool events[EVENT_ERROR + 1] = {0};
 
 
 
-STATIC eState nextState(eState state);
+STATIC void Execute_Current_State(eState currentState);
 STATIC void Exit_Current_State(eState currentState);
 STATIC void Enter_New_State(eState newState);
+STATIC eState Get_NextState_From_Events(eState state);
 
 // Private Function Prototypes for State Functions
 
@@ -57,27 +58,25 @@ void System_Control_Init(void) {
 
 _Noreturn void System_Control_Start(void) {
     eState currentState = STATE_ACTIVE;
-    Enter_New_State(currentState);
+    eState newState;
+    Enter_New_State(currentState);                         // Enter Initial State (Active State)
     while (true) {
-        currentState = nextState(currentState);
-        Shell_Read_Function();
+        Execute_Current_State(currentState);                        // Execute Running Stage of current state
+        newState = Get_NextState_From_Events(currentState);   // check for transition to new state
+        if (newState != currentState) {
+            Exit_Current_State(currentState);                     // Execute Exiting Stage of current state
+            Enter_New_State(newState);                            // Execute Entering Stage of new state
+            currentState = newState;                              // update current state
+            LOG_DEBUG("New State: %d", newState);
+        }
+        Shell_Read_Function();                                    // receive characters for shell
     }
 }
 
-STATIC eState nextState(eState state) {
+STATIC eState Get_NextState_From_Events(eState state) {
     eState nextState = state;
     switch (state)  {
         case STATE_ACTIVE:
-            // Updating Controllers to generate events if necessary
-            Tank_Controller_Update();
-            Soil_Controller_Update();
-
-            // checking for button press to cycle display
-            if (events[EVENT_SHORT_BUTTON_PRESS]) {
-                events[EVENT_SHORT_BUTTON_PRESS] = false;
-                Display_Controller_Cycle();
-            }
-
             // checking for transitions
             if (events[EVENT_SOIL_DRY]) {
                 nextState = STATE_WATERING;
@@ -94,10 +93,6 @@ STATIC eState nextState(eState state) {
             }
             break;
         case STATE_PERIODIC_CHECK:
-            // Updating Controllers to generate events if necessary
-            Tank_Controller_Update();
-            Soil_Controller_Update();
-
             // checking for transitions
             if (events[EVENT_SOIL_DRY]) {
                 nextState = STATE_WATERING;
@@ -108,10 +103,6 @@ STATIC eState nextState(eState state) {
             }
             break;
         case STATE_SLEEP:
-            // entering stop mode, turning off system
-            Power_Controller_StopMode();
-            // when the function exits, the system is awake again
-
             // checking for transitions, in this case finding out what woke up the system and transition accordingly
             if (events[EVENT_SHORT_BUTTON_PRESS]) {
                 nextState = STATE_ACTIVE;
@@ -120,19 +111,12 @@ STATIC eState nextState(eState state) {
             }
             break;
         case STATE_WATERING:
-            // water the plant and then update the soil controller to clear event if necessary
-            //Watering_Controller_WaterPlant(); // waters plant with small drops
-            Soil_Controller_Update();
-
             // check for transitions, in this case if the soil is wet enough
             if (!events[EVENT_SOIL_DRY]) {
                 nextState = STATE_ACTIVE;
             }
             break;
         case STATE_ERROR_TANK_EMPTY:
-            // update tank controller to clear event if necessary
-            Tank_Controller_Update();
-
             // check for transition, in this case if the tank is filled again
             if (!events[EVENT_TANK_EMPTY]) {
                 nextState = STATE_ACTIVE;
@@ -143,17 +127,11 @@ STATIC eState nextState(eState state) {
             nextState = STATE_SYSTEM_ERROR;
             break;
     }
-
-    if (nextState != state) {
-        Exit_Current_State(state);
-        Enter_New_State(nextState);
-    }
-
     return nextState;
 }
 
 /**
- * @brief Executes the setup function for the new set mode
+ * @brief Executes the Entering Stage for the new state
  * @param newState triggerMode_t typedef mode
  */
 STATIC void Enter_New_State(eState newState) {
@@ -195,7 +173,8 @@ STATIC void Enter_New_State(eState newState) {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "bugprone-branch-clone"
 /**
- * @brief Executes the disable function for the previous mode before setting the new state.
+ * @brief Executes the Exiting Stage for the current State
+ * @param currentState eState typedef enum state
  */
 STATIC void Exit_Current_State(eState currentState) {
     switch (currentState)  {
@@ -219,3 +198,43 @@ STATIC void Exit_Current_State(eState currentState) {
     }
 }
 #pragma clang diagnostic pop
+
+/**
+ * @brief Executes the Running Stage for the current state
+ * @param currentState eState typedef enum state
+ */
+STATIC void Execute_Current_State(eState currentState) {
+    switch (currentState)  {
+        case STATE_ACTIVE:
+            // Updating Controllers to generate events if necessary
+            Tank_Controller_Update();
+            Soil_Controller_Update();
+
+            // checking for button press to cycle display
+            if (events[EVENT_SHORT_BUTTON_PRESS]) {
+                events[EVENT_SHORT_BUTTON_PRESS] = false;
+                Display_Controller_Cycle();
+            }
+            break;
+        case STATE_PERIODIC_CHECK:
+            // Updating Controllers to generate events if necessary
+            Tank_Controller_Update();
+            Soil_Controller_Update();
+        case STATE_SLEEP:
+            // entering stop mode, turning off system
+            Power_Controller_StopMode();
+            // when the function exits, the system is awake again
+            break;
+        case STATE_WATERING:
+            // water the plant and then update the soil controller to clear event if necessary
+            //Watering_Controller_WaterPlant(); // waters plant with small drops
+            Soil_Controller_Update();
+            break;
+        case STATE_ERROR_TANK_EMPTY:
+            // update tank controller to clear event if necessary
+            Tank_Controller_Update();
+            break;
+        default: // == case STATE_SYSTEM_ERROR
+            break;
+    }
+}
