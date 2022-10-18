@@ -29,7 +29,7 @@ typedef enum {
 } eState;
 
 /* Events */
-STATIC bool events[EVENT_ERROR] = {0};
+STATIC bool events[EVENT_ERROR + 1] = {0};
 
 
 
