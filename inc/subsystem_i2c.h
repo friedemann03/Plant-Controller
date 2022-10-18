@@ -5,7 +5,7 @@
 #ifndef PLANT_CONTROLLER_SUBSYSTEM_I2C_H
 #define PLANT_CONTROLLER_SUBSYSTEM_I2C_H
 
-#include "i2c.h"
+#include "stdint.h"
 
 void I2c_Subsystem_Init(void);
 
