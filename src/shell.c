@@ -14,6 +14,7 @@
 #include "controller_power.h"
 #include "subsystem_rtc.h"
 #include "log_module.h"
+#include "system_control.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -54,6 +55,8 @@ CONSOLE_COMMAND_DEF(get_time, "Logs the current time of the RTC.");
 CONSOLE_COMMAND_DEF(set_time, "Logs the current time of the RTC.",
                     CONSOLE_INT_ARG_DEF(hours, "Value between 0 and 24."),
                     CONSOLE_INT_ARG_DEF(minutes, "Value between 0 and 60."));
+CONSOLE_COMMAND_DEF(trigger_event, "Triggers an event.",
+                    CONSOLE_INT_ARG_DEF(event, "according to enum typedef for events."));
 
 /**
  * @brief LED command handler.
@@ -115,6 +118,10 @@ static void set_time_command_handler(const set_time_args_t *args) {
     Rtc_Set_Time(time);
 }
 
+static void trigger_event_command_handler(const trigger_event_args_t *args) {
+    System_Control_SetEvent(args->event);
+}
+
 /**
  * @brief Write function implementation. This function is called by console.c when needed. To separate console output
  * from debugging output TERMINAL '1' instead of default '0' is used
@@ -148,4 +155,5 @@ void Shell_Init(void) {
     console_command_register(enter_STOPMode);
     console_command_register(get_time);
     console_command_register(set_time);
+    console_command_register(trigger_event);
 }
