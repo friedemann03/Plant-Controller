@@ -15,10 +15,6 @@ Event_t System_Event_Get_LatestEvent(void) {
 
 }
 
-void System_Event_Set_Event(eSystemEvent_t event) {
-
-}
-
-void System_Event_Clear_Event(eSystemEvent_t event) {
+void System_Event_Trigger_Event(eSystemEvent_t event) {
 
 }
