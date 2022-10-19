@@ -3,3 +3,22 @@
 //
 
 #include "system_events.h"
+#include "unit_testing.h"
+
+#define PRIORITY_LOWEST 0
+
+STATIC Event_t systemEvents[EVENT_ERROR + 1];
+
+STATIC Event_t latestEvent;
+
+Event_t System_Event_Get_LatestEvent(void) {
+
+}
+
+void System_Event_Set_Event(eSystemEvent_t event) {
+
+}
+
+void System_Event_Clear_Event(eSystemEvent_t event) {
+
+}
