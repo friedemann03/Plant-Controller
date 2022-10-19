@@ -37,12 +37,12 @@ STATIC volatile bool events[EVENT_ERROR + 1] = {0};
 /* State Machine Table */
 
 eState stateMachineTable[STATE_SYSTEM_ERROR + 1][EVENT_ERROR + 1] = {
-        {STATE_SLEEP, STATE_ACTIVE, STATE_ERROR_TANK_EMPTY, STATE_ACTIVE, STATE_WATERING, STATE_ACTIVE, STATE_ACTIVE, STATE_SYSTEM_ERROR},
-        {STATE_SLEEP, STATE_ACTIVE, STATE_SLEEP, STATE_SLEEP, STATE_SLEEP, STATE_SLEEP, STATE_PERIODIC_CHECK, STATE_SYSTEM_ERROR},
-        {STATE_SLEEP, STATE_SLEEP, STATE_ERROR_TANK_EMPTY, STATE_SLEEP, STATE_WATERING, STATE_SLEEP, STATE_SLEEP, STATE_SYSTEM_ERROR},
-        {STATE_WATERING, STATE_WATERING, STATE_ERROR_TANK_EMPTY, STATE_WATERING, STATE_WATERING, STATE_ACTIVE, STATE_WATERING, STATE_SYSTEM_ERROR},
-        {STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ACTIVE, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_SYSTEM_ERROR},
-        {STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR},
+        {STATE_SLEEP,   STATE_ACTIVE,  STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,  STATE_WATERING,STATE_ACTIVE,STATE_ACTIVE,        STATE_SYSTEM_ERROR},
+        {STATE_SLEEP,   STATE_ACTIVE,  STATE_SLEEP,            STATE_SLEEP,   STATE_SLEEP,   STATE_SLEEP, STATE_PERIODIC_CHECK,STATE_SYSTEM_ERROR},
+        {STATE_SLEEP,   STATE_SLEEP,   STATE_ERROR_TANK_EMPTY, STATE_SLEEP,   STATE_WATERING,STATE_SLEEP, STATE_SLEEP,         STATE_SYSTEM_ERROR},
+        {STATE_WATERING,STATE_WATERING,STATE_ERROR_TANK_EMPTY, STATE_WATERING,STATE_WATERING,STATE_ACTIVE,STATE_WATERING,      STATE_SYSTEM_ERROR},
+        {STATE_ERROR_TANK_EMPTY,STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,       STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_SYSTEM_ERROR},
+        {STATE_SYSTEM_ERROR,    STATE_SYSTEM_ERROR,     STATE_SYSTEM_ERROR,     STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR,     STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR,         STATE_SYSTEM_ERROR},
         };
 
 // Private Function Prototypes for State Functions
@@ -64,19 +64,19 @@ void System_Control_Init(void) {
 }
 
 _Noreturn void System_Control_Start(void) {
-    eState currentState = STATE_ACTIVE;
+    eState currentState = STATE_ACTIVE;                             // Set Initial State to ACTIVE
     eState newState;
-    Enter_New_State(currentState);                         // Enter Initial State (Active State)
+    Enter_New_State(currentState);                         // Enter Initial State
     while (true) {
         Execute_Current_State(currentState);                        // Execute Running Stage of current state
         newState = Get_NextState_From_Events(currentState);   // check for transition to new state
         if (newState != currentState) {
-            Exit_Current_State(currentState);                     // Execute Exiting Stage of current state
-            Enter_New_State(newState);                            // Execute Entering Stage of new state
-            currentState = newState;                              // update current state
+            Exit_Current_State(currentState);                       // Execute Exiting Stage of current state
+            Enter_New_State(newState);                              // Execute Entering Stage of new state
+            currentState = newState;                                // update current state
             LOG_DEBUG("New State: %d", newState);
         }
-        Shell_Read_Function();                                    // receive characters for shell
+        Shell_Read_Function();                                      // receive characters for shell
     }
 }
 
