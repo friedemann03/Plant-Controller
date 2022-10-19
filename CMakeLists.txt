@@ -67,6 +67,8 @@ include_directories(
 )
 
 list(APPEND SOURCES
+        src/system_control.c
+        src/system_events.c
         src/controller_led.c
         src/controller_tank.c
         src/controller_display.c

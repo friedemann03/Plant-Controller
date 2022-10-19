@@ -5,7 +5,7 @@
 #ifndef PLANT_CONTROLLER_SUBSYSTEM_ADC_H
 #define PLANT_CONTROLLER_SUBSYSTEM_ADC_H
 
-#include "adc.h"
+#include "stdint.h"
 
 
 void Adc_Subsystem_Init(void);

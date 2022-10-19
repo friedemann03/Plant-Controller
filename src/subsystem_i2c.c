@@ -3,7 +3,7 @@
 //
 
 #include "subsystem_i2c.h"
-
+#include "i2c.h"
 
 void I2c_Subsystem_Init(void) {
     MX_I2C1_Init();

@@ -93,9 +93,9 @@ static void print_WaterLevel(void) {
     helper_printLine(1, lines[1]);
 }
 static void print_HelloWorld(void) {
-    char lines[2][LINE_LENGTH] = {"Hello World :)", ""};
+    char lines[2][LINE_LENGTH] = {"System Time:", ""};
     sTime_t time = Rtc_Get_Time();
-    sprintf(lines[1], "Time: %d-%d-%d", time.hours, time.minutes, time.seconds);
+    sprintf(lines[1], "%d:%d:%d", time.hours, time.minutes, time.seconds);
 
     helper_printLine(0, lines[0]);
     helper_printLine(1, lines[1]);
