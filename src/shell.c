@@ -14,6 +14,7 @@
 #include "controller_power.h"
 #include "subsystem_rtc.h"
 #include "log_module.h"
+#include "system_events.h"
 #include "system_control.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -119,7 +120,7 @@ static void set_time_command_handler(const set_time_args_t *args) {
 }
 
 static void trigger_event_command_handler(const trigger_event_args_t *args) {
-    System_Control_SetEvent(args->event);
+    System_Event_Trigger_Event(args->event);
 }
 
 /**
