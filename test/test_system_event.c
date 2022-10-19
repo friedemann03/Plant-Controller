@@ -59,5 +59,15 @@ void test_TriggerEvent_shouldNotSetLatestEvent_DueToLowerOrEqualPriority(void) {
 
     System_Event_Trigger_Event(2);
 
-    TEST_ASSERT_EQUAL(42, latestEvent.index);
+    TEST_ASSERT_EQUAL(13, latestEvent.index);
+}
+
+void test_SystemEventInit_shouldInitializeLatestEvent_to_NoEvent(void) {
+    latestEvent.priority = 200;
+    latestEvent.index = 200;
+
+    System_Event_Init();
+
+    TEST_ASSERT_EQUAL(0, latestEvent.priority);
+    TEST_ASSERT_EQUAL(255, latestEvent.index);
 }

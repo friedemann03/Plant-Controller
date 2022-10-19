@@ -24,6 +24,8 @@ typedef struct {
     uint8_t priority;
 } Event_t;
 
+void System_Event_Init(void);
+
 Event_t System_Event_Get_LatestEvent(void);
 
 void System_Event_Trigger_Event(eSystemEvent_t event);

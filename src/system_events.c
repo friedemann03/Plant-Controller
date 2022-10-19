@@ -19,6 +19,12 @@ STATIC Event_t systemEvents[EVENT_ERROR + 1] = {
 
 STATIC Event_t latestEvent;
 
+
+void System_Event_Init(void) {
+    latestEvent.priority = PRIORITY_LOWEST;
+    latestEvent.index = NO_EVENT;
+}
+
 Event_t System_Event_Get_LatestEvent(void) {
     Event_t returnEvent = latestEvent;
     latestEvent.index = NO_EVENT;
@@ -28,7 +34,7 @@ Event_t System_Event_Get_LatestEvent(void) {
 
 void System_Event_Trigger_Event(eSystemEvent_t event) {
     Event_t newEvent = systemEvents[event];
-    if (newEvent.priority > latestEvent.priority) {
+    if (newEvent.priority >= latestEvent.priority) {
         latestEvent = systemEvents[event];
     }
 }
