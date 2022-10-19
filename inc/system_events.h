@@ -7,7 +7,7 @@
 
 #include "stdint.h"
 
-#define NO_EVENT (-1)
+#define NO_EVENT (0xFF)
 
 typedef enum {
     EVENT_IDLE_TIMEOUT,
