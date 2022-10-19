@@ -167,12 +167,7 @@ STATIC void Execute_Current_State(eState currentState) {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
-
-            // checking for button press to cycle display
-            if (events[EVENT_SHORT_BUTTON_PRESS]) {
-                events[EVENT_SHORT_BUTTON_PRESS] = false;
-                Display_Controller_Cycle();
-            }
+            
             break;
         case STATE_PERIODIC_CHECK:
             // Updating Controllers to generate events if necessary
