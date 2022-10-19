@@ -5,6 +5,7 @@
 #include "../vendor/ceedling/vendor/unity/src/unity.h"
 #include "stdbool.h"
 #include "system_control.h"
+#include "system_events.h"
 
 #include "mock_controller_tank.h"
 #include "mock_controller_display.h"
