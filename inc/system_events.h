@@ -1,0 +1,8 @@
+//
+// Created by Friedemann Drepper on 19.10.22.
+//
+
+#ifndef PLANT_CONTROLLER_SYSTEM_EVENTS_H
+#define PLANT_CONTROLLER_SYSTEM_EVENTS_H
+
+#endif //PLANT_CONTROLLER_SYSTEM_EVENTS_H
