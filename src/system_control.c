@@ -16,6 +16,8 @@
 #include "log_module_colors.h"
 #include "shell.h"
 
+#include "system_events.h"
+
 /* Defines */
 
 /* States */
@@ -43,21 +45,13 @@ eState stateMachineTable[STATE_SYSTEM_ERROR + 1][EVENT_ERROR + 1] = {
         {STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR}
         };
 
-
+// Private Function Prototypes for State Functions
 STATIC void Execute_Current_State(eState currentState);
 STATIC void Exit_Current_State(eState currentState);
 STATIC void Enter_New_State(eState newState);
 STATIC eState Get_NextState_From_Events(eState state);
 
-// Private Function Prototypes for State Functions
 
-void System_Control_SetEvent(event_t event) {
-    events[event] = true;
-}
-
-void System_Control_ClearEvent(event_t event) {
-    events[event] = false;
-}
 
 void System_Control_Init(void) {
     Shell_Init();
