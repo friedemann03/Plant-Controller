@@ -7,16 +7,19 @@
 
 #define PRIO_NOEVENT 0
 #define PRIO_EVENT_1 1
+#define PRIO_EVENT_2 2
+#define PRIO_POWER_EVENTS 10
+#define PRIO_ERROR 200
 
 STATIC Event_t systemEvents[EVENT_ERROR + 1] = {
-        {.priority = PRIO_EVENT_1, .index = EVENT_IDLE_TIMEOUT},
-        {.priority = PRIO_EVENT_1, .index = EVENT_LONG_BUTTON_PRESS},
-        {.priority = PRIO_EVENT_1, .index = EVENT_TANK_EMPTY},
+        {.priority = PRIO_POWER_EVENTS, .index = EVENT_IDLE_TIMEOUT},
+        {.priority = PRIO_POWER_EVENTS, .index = EVENT_LONG_BUTTON_PRESS},
+        {.priority = PRIO_EVENT_2, .index = EVENT_TANK_EMPTY},
         {.priority = PRIO_EVENT_1, .index = EVENT_TANK_NOTEMPTY},
-        {.priority = PRIO_EVENT_1, .index = EVENT_SOIL_DRY},
+        {.priority = PRIO_EVENT_2, .index = EVENT_SOIL_DRY},
         {.priority = PRIO_EVENT_1, .index = EVENT_SOIL_WET},
-        {.priority = PRIO_EVENT_1, .index = EVENT_RTC_WAKEUP},
-        {.priority = PRIO_EVENT_1, .index = EVENT_ERROR},
+        {.priority = PRIO_POWER_EVENTS, .index = EVENT_RTC_WAKEUP},
+        {.priority = PRIO_ERROR, .index = EVENT_ERROR},
 };
 
 STATIC Event_t latestEvent;
