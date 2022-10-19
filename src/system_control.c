@@ -78,59 +78,12 @@ _Noreturn void System_Control_Start(void) {
     }
 }
 
+
 STATIC eState Get_NextState_From_Events(eState state) {
     eState nextState = state;
-    switch (state)  {
-        case STATE_ACTIVE:
-            // checking for transitions
-            if (events[EVENT_SOIL_DRY]) {
-                nextState = STATE_WATERING;
-            }
-
-            if (events[EVENT_TANK_EMPTY]) {
-                nextState = STATE_ERROR_TANK_EMPTY;
-            }
-
-            if (events[EVENT_LONG_BUTTON_PRESS] || events[EVENT_IDLE_TIMEOUT]) {
-                events[EVENT_LONG_BUTTON_PRESS] = false;
-                events[EVENT_IDLE_TIMEOUT] = false;
-                nextState = STATE_SLEEP;
-            }
-            break;
-        case STATE_PERIODIC_CHECK:
-            // checking for transitions
-            if (events[EVENT_SOIL_DRY]) {
-                nextState = STATE_WATERING;
-            } else if (events[EVENT_TANK_EMPTY]) {
-                nextState = STATE_ERROR_TANK_EMPTY;
-            } else {
-                nextState = STATE_SLEEP;
-            }
-            break;
-        case STATE_SLEEP:
-            // checking for transitions, in this case finding out what woke up the system and transition accordingly
-            if (events[EVENT_SHORT_BUTTON_PRESS]) {
-                nextState = STATE_ACTIVE;
-            } else {
-                nextState = STATE_PERIODIC_CHECK;
-            }
-            break;
-        case STATE_WATERING:
-            // check for transitions, in this case if the soil is wet enough
-            if (!events[EVENT_SOIL_DRY]) {
-                nextState = STATE_ACTIVE;
-            }
-            break;
-        case STATE_ERROR_TANK_EMPTY:
-            // check for transition, in this case if the tank is filled again
-            if (!events[EVENT_TANK_EMPTY]) {
-                nextState = STATE_ACTIVE;
-            }
-            break;
-        default: // == case STATE_SYSTEM_ERROR
-            // SHOULD NEVER REACH THIS, if it does, it stays here until reset.
-            nextState = STATE_SYSTEM_ERROR;
-            break;
+    Event_t currentEvent = System_Event_Get_LatestEvent();
+    if (currentEvent.index != NO_EVENT && currentEvent.index < (EVENT_ERROR + 1)) {
+        nextState = stateMachineTable[state][currentEvent.index];
     }
     return nextState;
 }
