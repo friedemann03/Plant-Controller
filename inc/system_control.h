@@ -8,8 +8,6 @@
 #include "stdint.h"
 
 
-
-
 void System_Control_Init(void);
 
 _Noreturn void System_Control_Start(void); // will never return
