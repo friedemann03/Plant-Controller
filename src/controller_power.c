@@ -15,10 +15,17 @@
 #include "controller_led.h"
 #include "controller_tank.h"
 #include "subsystem_rtc.h"
+#include "system_events.h"
 
 
 extern void SystemClock_Config(void);
 
+
+static bool buttonWakeUp;
+
+void Power_Controller_Set_ButtonWakeUp(void) {
+    buttonWakeUp = true;
+}
 
 void Power_Controller_StopMode(void) {
 
@@ -78,6 +85,12 @@ void Power_Controller_StopMode(void) {
 
     /* Resume Tick interrupt if disabled prior to sleep mode entry */
     HAL_ResumeTick();
+
+    if (buttonWakeUp) {
+        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
+    } else {
+        System_Event_Trigger_Event(EVENT_RTC_WAKEUP);
+    }
 
     /* Reinitialize all Subsystems */
     Gpio_Subsystem_Init();

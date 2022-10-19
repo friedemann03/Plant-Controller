@@ -7,6 +7,7 @@
 #include "subsystem_tim.h"
 #include "stdbool.h"
 #include "log_module.h"
+#include "system_events.h"
 
 /* Private Defines ------------------------------------------------------------*/
 #define SENSOR_I2C_ADDRESS (0x57)
@@ -24,6 +25,7 @@ void Tank_Controller_Init(void) {
     Tim_Enable(false, TIMER_11);
     SR04_Init(&distanceSensor, SENSOR_I2C_ADDRESS);
     isCurrentMeasurementDone = true;
+    emptyLimit = 0; // TODO Needs to be set depending on tank
 }
 
 void Tank_Controller_Update(void) {
@@ -33,6 +35,12 @@ void Tank_Controller_Update(void) {
 //        LOG_DEBUG("Last distance: %u mm", (unsigned int) distanceSensor.actualData);
         Tim_EnableIRQ(true, TIMER_11);
         Tim_Enable(true, TIMER_11);
+    }
+
+    if (SR04_Get_Measurement(&distanceSensor) > emptyLimit) {
+        System_Event_Trigger_Event(EVENT_TANK_EMPTY);
+    } else {
+        System_Event_Trigger_Event(EVENT_TANK_NOTEMPTY);
     }
 }
 
