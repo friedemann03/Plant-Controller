@@ -336,7 +336,10 @@ void EXTI15_10_IRQHandler(void)
 void TIM5_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM5_IRQn 0 */
-
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM5)) {
+      LL_TIM_ClearFlag_UPDATE(TIM5);
+      Tim_5_Callback();
+  }
   /* USER CODE END TIM5_IRQn 0 */
   /* USER CODE BEGIN TIM5_IRQn 1 */
 
