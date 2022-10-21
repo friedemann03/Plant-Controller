@@ -144,12 +144,15 @@ void Console_Write_Function(const char *str) {
 
 /**
  * @brief Read function implementation. Needs to be called on a regular basis to provide input data to the console.
+ * @return bool value if a new character got processed
  */
-void Shell_Read_Function(void) {
+bool Shell_Read_Function(void) {
     uint8_t inputChar;
     if (Uart_Receive_Char(&inputChar)) {
         console_process(&inputChar, 1);
+        return true;
     }
+    return false;
 }
 
 /**
