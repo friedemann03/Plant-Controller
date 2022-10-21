@@ -41,7 +41,6 @@ Event_t System_Event_Get_LatestEvent(void) {
 void System_Event_Trigger_Event(eSystemEvent_t event) {
     Event_t newEvent = systemEvents[event];
     if (newEvent.priority >= latestEvent.priority) {
-        LOG_DEBUG("Event triggered: %d", event);
         latestEvent = systemEvents[event];
     }
 }
