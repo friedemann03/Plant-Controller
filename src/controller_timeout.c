@@ -9,7 +9,7 @@
 #define TIMOUT_TIMER TIMER_5
 
 
-void Timout_Controller_Init(void) {
+void Timeout_Controller_Init(void) {
     Tim_EnableIRQ(false, TIMOUT_TIMER);
     Tim_Enable(false, TIMOUT_TIMER);
 }

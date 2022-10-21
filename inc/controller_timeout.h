@@ -9,7 +9,7 @@
 
 
 
-void Timout_Controller_Init(void);
+void Timeout_Controller_Init(void);
 
 void Timeout_Controller_Start(void);
 
