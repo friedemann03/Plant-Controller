@@ -60,6 +60,16 @@ void Tim_EnableIRQ(bool status, uint32_t index) {
     }
 }
 
+void Tim_ResetCounter(uint32_t index) {
+    uint32_t newCounterValue;
+    if (LL_TIM_GetDirection((TIM_TypeDef *) timerMap[index]) == LL_TIM_COUNTERDIRECTION_UP) {
+        newCounterValue = 0;
+    } else {
+        newCounterValue = LL_TIM_GetAutoReload((TIM_TypeDef *) timerMap[index]);
+    }
+    LL_TIM_SetCounter((TIM_TypeDef *) timerMap[index], newCounterValue);
+}
+
 
 
 #include "subsystem_tim.h"
