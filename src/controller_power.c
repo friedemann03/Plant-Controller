@@ -29,6 +29,7 @@ void Power_Controller_Set_ButtonWakeUp(void) {
 
 void Power_Controller_StopMode(void) {
 
+    LOG_DEBUG("Entering STOP Mode now.");
     // Disable all subsystems and GPIOs (setting them to analog) to minimize power consumption
     Uart_Subsystem_DeInit();
     Tim_Subsystem_DeInit();
@@ -98,5 +99,7 @@ void Power_Controller_StopMode(void) {
     Tim_Subsystem_Init();
     Adc_Subsystem_Init();
     I2c_Subsystem_Init();
+
+    LOG_DEBUG("Exiting STOP Mode now.");
     
 }
