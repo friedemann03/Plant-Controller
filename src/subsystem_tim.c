@@ -39,6 +39,7 @@ void Tim_Subsystem_Init(void) {
 
 void Tim_Subsystem_DeInit(void) {
     LL_TIM_DeInit(TIM2);
+    LL_TIM_DeInit(TIM3);
     LL_TIM_DeInit(TIM5);
     LL_TIM_DeInit(TIM10);
     LL_TIM_DeInit(TIM11);
