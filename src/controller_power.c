@@ -14,6 +14,7 @@
 #include "log_module.h"
 #include "controller_led.h"
 #include "controller_tank.h"
+#include "controller_button.h"
 #include "subsystem_rtc.h"
 #include "system_events.h"
 
@@ -30,6 +31,10 @@ void Power_Controller_Set_ButtonWakeUp(void) {
 void Power_Controller_StopMode(void) {
 
     LOG_DEBUG("Entering STOP Mode now.");
+
+    // enabling the wakeup function in the button controller
+    Button_Controller_EnableWakeUp();
+
     // Disable all subsystems and GPIOs (setting them to analog) to minimize power consumption
     Uart_Subsystem_DeInit();
     Tim_Subsystem_DeInit();
