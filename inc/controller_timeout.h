@@ -14,4 +14,4 @@ void Timeout_Controller_Init(void);
 
 void Timeout_Controller_Enable(bool status);
 
-void Timeout_Controller_Stop(void);
+void Timeout_Controller_Reset(void);
