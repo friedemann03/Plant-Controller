@@ -110,6 +110,3 @@ void Tim_2_Callback(void) {
     display_print[currentPrintFunction]();
 }
 
-void Exti_15_10_Callback(void) {
-    Display_Controller_Cycle();
-}
