@@ -68,6 +68,7 @@ void Tim_ResetCounter(uint32_t index) {
         newCounterValue = LL_TIM_GetAutoReload((TIM_TypeDef *) timerMap[index]);
     }
     LL_TIM_SetCounter((TIM_TypeDef *) timerMap[index], newCounterValue);
+    LL_TIM_ClearFlag_UPDATE((TIM_TypeDef *) timerMap[index]);
 }
 
 
