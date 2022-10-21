@@ -10,8 +10,8 @@
 #include "system_events.h"
 #include "log_module.h"
 
-#define RELOAD_VALUE_ONE 100            // 50ms
-#define RELOAD_VALUE_TWO 600            // 300ms
+#define RELOAD_VALUE_ONE 40             // 20ms
+#define RELOAD_VALUE_TWO 400            // 200ms
 #define RELOAD_VALUE_THREE 4000         // 2s
 
 #define BUTTON_TIMER TIMER_3
@@ -32,8 +32,8 @@ static uint8_t stage;
 static void(*interruptHandlerFunc)(void);
 
 
-static bool controllerEnabled = false;
-static bool wakeupEnabled = false;
+static volatile bool controllerEnabled = false;
+static volatile bool wakeupEnabled = false;
 
 
 void Button_Controller_Init(void) {
@@ -66,6 +66,7 @@ static void longButtonPress(void) {
 }
 
 static void firstStage(void) {
+    LOG_DEBUG("First Stage reached, status %d", Gpio_Is_Input_Pin_Set(button.port, button.pin));
     if (!Gpio_Is_Input_Pin_Set(button.port, button.pin)) {
         interruptHandlerFunc = secondStage;
         Tim_Set_ReloadValue(BUTTON_TIMER, RELOAD_VALUE_TWO);
@@ -76,6 +77,7 @@ static void firstStage(void) {
     }
 }
 static void secondStage(void) {
+    LOG_DEBUG("Second stage reached, status %d", Gpio_Is_Input_Pin_Set(button.port, button.pin));
     if (Gpio_Is_Input_Pin_Set(button.port, button.pin)) {
         Tim_EnableIRQ(false, BUTTON_TIMER);
         Tim_Enable(false, BUTTON_TIMER);
@@ -87,8 +89,11 @@ static void secondStage(void) {
     }
 }
 static void thirdStage(void) {
+    LOG_DEBUG("Third stage reached, status %d", Gpio_Is_Input_Pin_Set(button.port, button.pin));
     if (!Gpio_Is_Input_Pin_Set(button.port, button.pin)) {
         longButtonPress();
+    } else {
+        shortButtonPress();
     }
     Tim_EnableIRQ(false, BUTTON_TIMER);
     Tim_Enable(false, BUTTON_TIMER);
@@ -99,6 +104,7 @@ void Exti_15_10_Callback(void) {
         wakeupEnabled = false;
         Power_Controller_Set_ButtonWakeUp();
     } else if (controllerEnabled) {
+        LOG_DEBUG("Button was pressed");
         Tim_ResetCounter(BUTTON_TIMER);
         Tim_Set_ReloadValue(BUTTON_TIMER, RELOAD_VALUE_ONE);
         Tim_EnableIRQ(true, BUTTON_TIMER);
