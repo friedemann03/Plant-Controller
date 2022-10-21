@@ -147,6 +147,7 @@ STATIC void Execute_Current_State(eState currentState) {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
+            break;
         case STATE_SLEEP:
             // entering stop mode, turning off system
             Power_Controller_StopMode();
