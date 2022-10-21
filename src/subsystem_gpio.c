@@ -99,7 +99,7 @@ void Gpio_Toggle_Output_Pin(uint32_t port, uint32_t pinMask) {
     LL_GPIO_TogglePin((GPIO_TypeDef *) portMap[port], pinMask);
 }
 
-uint32_t Gpio_Is_Input_Pin_Set(uint32_t port, uint32_t pinMask) {
+bool Gpio_Is_Input_Pin_Set(uint32_t port, uint32_t pinMask) {
     return LL_GPIO_IsInputPinSet((GPIO_TypeDef *) portMap[port], pinMask);
 }
 
