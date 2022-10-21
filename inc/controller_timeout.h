@@ -6,3 +6,13 @@
 #define PLANT_CONTROLLER_CONTROLLER_TIMEOUT_H
 
 #endif //PLANT_CONTROLLER_CONTROLLER_TIMEOUT_H
+
+
+
+void Timout_Controller_Init(void);
+
+void Timeout_Controller_Start(void);
+
+void Timeout_Controller_Reset(void);
+
+void Timeout_Controller_Stop(void);
