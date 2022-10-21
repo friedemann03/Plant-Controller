@@ -11,6 +11,7 @@
 #include "controller_led.h"
 #include "controller_power.h"
 #include "controller_soil.h"
+#include "controller_timeout.h"
 
 #include "log_module.h"
 #include "log_module_colors.h"
@@ -55,12 +56,12 @@ STATIC eState Get_NextState_From_Events(eState state);
 
 void System_Control_Init(void) {
     System_Event_Init();
-
     Shell_Init();
     Led_Controller_Init();
     Tank_Controller_Init();
     Display_Controller_Init();
     Soil_Controller_Init();
+    Timeout_Controller_Init();
 }
 
 _Noreturn void System_Control_Start(void) {
@@ -102,6 +103,7 @@ STATIC void Enter_New_State(eState newState) {
             Led_Controller_Enable(true);
             Display_Controller_Enable(true);
             Tank_Controller_Init();
+            Timeout_Controller_Enable(true);
             //Button_Controller_Enable(true);
             break;
         case STATE_PERIODIC_CHECK:
@@ -109,6 +111,7 @@ STATIC void Enter_New_State(eState newState) {
         case STATE_SLEEP:
             Led_Controller_Enable(false);
             Display_Controller_Enable(false);
+            Timeout_Controller_Enable(false);
             //Button_Controller_Enable(false);
             break;
         case STATE_WATERING:
@@ -128,35 +131,6 @@ STATIC void Enter_New_State(eState newState) {
     }
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "bugprone-branch-clone"
-/**
- * @brief Executes the Exiting Stage for the current State
- * @param currentState eState typedef enum state
- */
-STATIC void Exit_Current_State(eState currentState) {
-    switch (currentState)  {
-        case STATE_ACTIVE:
-            Led_Controller_Enable(false);
-            break;
-        case STATE_PERIODIC_CHECK:
-            break;
-        case STATE_SLEEP:
-            break;
-        case STATE_WATERING:
-            Led_Controller_EnableFastMode(false);
-            Led_Controller_Enable(false);
-            break;
-        case STATE_ERROR_TANK_EMPTY:
-            break;
-        case STATE_SYSTEM_ERROR:
-            break;
-        default:
-            break;
-    }
-}
-#pragma clang diagnostic pop
-
 /**
  * @brief Executes the Running Stage for the current state
  * @param currentState eState typedef enum state
@@ -167,7 +141,7 @@ STATIC void Execute_Current_State(eState currentState) {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
-            
+
             break;
         case STATE_PERIODIC_CHECK:
             // Updating Controllers to generate events if necessary
@@ -191,3 +165,34 @@ STATIC void Execute_Current_State(eState currentState) {
             break;
     }
 }
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "bugprone-branch-clone"
+/**
+ * @brief Executes the Exiting Stage for the current State
+ * @param currentState eState typedef enum state
+ */
+STATIC void Exit_Current_State(eState currentState) {
+    switch (currentState)  {
+        case STATE_ACTIVE:
+            Led_Controller_Enable(false);
+            Timeout_Controller_Enable(false);
+            break;
+        case STATE_PERIODIC_CHECK:
+            break;
+        case STATE_SLEEP:
+            break;
+        case STATE_WATERING:
+            Led_Controller_EnableFastMode(false);
+            Led_Controller_Enable(false);
+            break;
+        case STATE_ERROR_TANK_EMPTY:
+            break;
+        case STATE_SYSTEM_ERROR:
+            break;
+        default:
+            break;
+    }
+}
+#pragma clang diagnostic pop
+
