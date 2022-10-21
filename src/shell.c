@@ -12,6 +12,7 @@
 #include "controller_display.h"
 #include "controller_soil.h"
 #include "controller_power.h"
+#include "controller_timeout.h"
 #include "subsystem_rtc.h"
 #include "log_module.h"
 #include "system_events.h"
@@ -58,6 +59,7 @@ CONSOLE_COMMAND_DEF(set_time, "Logs the current time of the RTC.",
                     CONSOLE_INT_ARG_DEF(minutes, "Value between 0 and 60."));
 CONSOLE_COMMAND_DEF(trigger_event, "Triggers an event.",
                     CONSOLE_INT_ARG_DEF(event, "according to enum typedef for events."));
+CONSOLE_COMMAND_DEF(reset_timout, "Resetting the idle timeout.");
 
 /**
  * @brief LED command handler.
@@ -123,6 +125,14 @@ static void trigger_event_command_handler(const trigger_event_args_t *args) {
     System_Event_Trigger_Event(args->event);
 }
 
+static void reset_timout_command_handler(const reset_timout_args_t *args) {
+    Timeout_Controller_Reset();
+}
+
+
+
+
+
 /**
  * @brief Write function implementation. This function is called by console.c when needed. To separate console output
  * from debugging output TERMINAL '1' instead of default '0' is used
@@ -157,4 +167,5 @@ void Shell_Init(void) {
     console_command_register(get_time);
     console_command_register(set_time);
     console_command_register(trigger_event);
+    console_command_register(reset_timout);
 }
