@@ -11,7 +11,7 @@
 /* Exported macro ------------------------------------------------------------*/
 //#define TIMER_1              1
 #define TIMER_2              2
-//#define TIMER_3              3
+#define TIMER_3              3
 //#define TIMER_4              4
 #define TIMER_5              5
 //#define TIMER_6              6
@@ -40,6 +40,8 @@ void Tim_EnableIRQ(bool status, uint32_t timerIRQn);
 void Tim_ResetCounter(uint32_t index);
 
 __attribute__((weak)) void Tim_2_Callback(void);
+
+__attribute__((weak)) void Tim_3_Callback(void);
 
 __attribute__((weak)) void Tim_5_Callback(void);
 
