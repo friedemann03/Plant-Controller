@@ -12,6 +12,7 @@
 #include "controller_power.h"
 #include "controller_soil.h"
 #include "controller_timeout.h"
+#include "controller_button.h"
 
 #include "log_module.h"
 #include "log_module_colors.h"
@@ -62,6 +63,7 @@ void System_Control_Init(void) {
     Display_Controller_Init();
     Soil_Controller_Init();
     Timeout_Controller_Init();
+    Button_Controller_Init();
 }
 
 _Noreturn void System_Control_Start(void) {
@@ -106,7 +108,7 @@ STATIC void Enter_New_State(eState newState) {
             Display_Controller_Enable(true);
             Tank_Controller_Init();
             Timeout_Controller_Enable(true);
-            //Button_Controller_Enable(true);
+            Button_Controller_Enable(true);
             break;
         case STATE_PERIODIC_CHECK:
             break;
@@ -114,9 +116,10 @@ STATIC void Enter_New_State(eState newState) {
             Led_Controller_Enable(false);
             Display_Controller_Enable(false);
             Timeout_Controller_Enable(false);
-            //Button_Controller_Enable(false);
+            Button_Controller_Enable(false);
             break;
         case STATE_WATERING:
+            Button_Controller_Enable(false);
             Led_Controller_EnableFastMode(true);
             Led_Controller_Enable(true);
             break;
@@ -157,7 +160,7 @@ STATIC void Execute_Current_State(eState currentState) {
             break;
         case STATE_WATERING:
             // water the plant and then update the soil controller to clear event if necessary
-            //Watering_Controller_WaterPlant(); // waters plant with small drops
+            //Watering_Controller_WaterPlant(); // waters plant with small drops TODO
             Soil_Controller_Update();
             break;
         case STATE_ERROR_TANK_EMPTY:
