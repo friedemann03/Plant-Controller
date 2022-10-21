@@ -255,7 +255,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void TIM1_TRG_COM_TIM11_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 0 */
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM11)) {
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM11) && LL_TIM_IsEnabledIT_UPDATE(TIM11)) {
       LL_TIM_ClearFlag_UPDATE(TIM11);
       Tim_11_Callback();
   }
@@ -272,7 +272,7 @@ void TIM1_TRG_COM_TIM11_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM2)) {
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM2) && LL_TIM_IsEnabledIT_UPDATE(TIM2)) {
       LL_TIM_ClearFlag_UPDATE(TIM2);
       Tim_2_Callback();
     }
@@ -288,9 +288,9 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM3)) {
-      LL_TIM_ClearFlag_UPDATE(TIM3);
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM3) && LL_TIM_IsEnabledIT_UPDATE(TIM3)) {
       Tim_3_Callback();
+      LL_TIM_ClearFlag_UPDATE(TIM3);
   }
   /* USER CODE END TIM3_IRQn 0 */
   /* USER CODE BEGIN TIM3_IRQn 1 */
@@ -352,9 +352,9 @@ void EXTI15_10_IRQHandler(void)
 void TIM5_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM5_IRQn 0 */
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM5)) {
-      LL_TIM_ClearFlag_UPDATE(TIM5);
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM5) && LL_TIM_IsEnabledIT_UPDATE(TIM5)) {
       Tim_5_Callback();
+      LL_TIM_ClearFlag_UPDATE(TIM5);
   }
   /* USER CODE END TIM5_IRQn 0 */
   /* USER CODE BEGIN TIM5_IRQn 1 */
