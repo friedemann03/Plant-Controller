@@ -31,6 +31,7 @@ const uint32_t *timerMap[15] = {0, (uint32_t *) TIM1, (uint32_t *) TIM2,
 /* Function definitions ------------------------------------------------------*/
 void Tim_Subsystem_Init(void) {
     MX_TIM2_Init();
+    MX_TIM3_Init();
     MX_TIM5_Init();
     MX_TIM10_Init();
     MX_TIM11_Init();
@@ -38,6 +39,7 @@ void Tim_Subsystem_Init(void) {
 
 void Tim_Subsystem_DeInit(void) {
     LL_TIM_DeInit(TIM2);
+    LL_TIM_DeInit(TIM3);
     LL_TIM_DeInit(TIM5);
     LL_TIM_DeInit(TIM10);
     LL_TIM_DeInit(TIM11);
@@ -69,6 +71,10 @@ void Tim_ResetCounter(uint32_t index) {
     }
     LL_TIM_SetCounter((TIM_TypeDef *) timerMap[index], newCounterValue);
     LL_TIM_ClearFlag_UPDATE((TIM_TypeDef *) timerMap[index]);
+}
+
+void Tim_Set_ReloadValue(uint32_t index, uint32_t newReloadValue) {
+    LL_TIM_SetAutoReload((TIM_TypeDef *) timerMap[index], newReloadValue);
 }
 
 

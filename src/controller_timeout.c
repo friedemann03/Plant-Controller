@@ -6,22 +6,23 @@
 #include "subsystem_tim.h"
 #include "system_events.h"
 
-#define TIMOUT_TIMER TIMER_5
+#define TIMEOUT_TIMER TIMER_5
 
 
 void Timeout_Controller_Init(void) {
-    Tim_EnableIRQ(false, TIMOUT_TIMER);
-    Tim_Enable(false, TIMOUT_TIMER);
-    Tim_ResetCounter(TIMOUT_TIMER);
+    Tim_ResetCounter(TIMEOUT_TIMER);
+    Tim_EnableIRQ(false, TIMEOUT_TIMER);
+    Tim_Enable(false, TIMEOUT_TIMER);
 }
 
 void Timeout_Controller_Enable(bool status) {
-    Tim_EnableIRQ(status, TIMOUT_TIMER);
-    Tim_Enable(status, TIMOUT_TIMER);
+    Tim_ResetCounter(TIMEOUT_TIMER);
+    Tim_EnableIRQ(status, TIMEOUT_TIMER);
+    Tim_Enable(status, TIMEOUT_TIMER);
 }
 
 void Timeout_Controller_Reset(void) {
-    Tim_ResetCounter(TIMOUT_TIMER);
+    Tim_ResetCounter(TIMEOUT_TIMER);
 }
 
 void Tim_5_Callback(void) {

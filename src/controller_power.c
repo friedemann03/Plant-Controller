@@ -14,6 +14,7 @@
 #include "log_module.h"
 #include "controller_led.h"
 #include "controller_tank.h"
+#include "controller_button.h"
 #include "subsystem_rtc.h"
 #include "system_events.h"
 
@@ -21,7 +22,7 @@
 extern void SystemClock_Config(void);
 
 
-static bool buttonWakeUp;
+static volatile bool buttonWakeUp;
 
 void Power_Controller_Set_ButtonWakeUp(void) {
     buttonWakeUp = true;
@@ -30,6 +31,11 @@ void Power_Controller_Set_ButtonWakeUp(void) {
 void Power_Controller_StopMode(void) {
 
     LOG_DEBUG("Entering STOP Mode now.");
+
+    // enabling the wakeup function in the button controller
+    Button_Controller_EnableWakeUp();
+    buttonWakeUp = false;
+
     // Disable all subsystems and GPIOs (setting them to analog) to minimize power consumption
     Uart_Subsystem_DeInit();
     Tim_Subsystem_DeInit();
@@ -41,7 +47,7 @@ void Power_Controller_StopMode(void) {
     GPIO_InitTypeDef GPIO_InitStruct;
     __HAL_RCC_GPIOC_CLK_ENABLE();
     GPIO_InitStruct.Pin = USER_BTN_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
@@ -77,6 +83,7 @@ void Power_Controller_StopMode(void) {
     /* Reconfigure the Clock Tree after wakeup */
     SystemClock_Config();
 
+
     /*Disable the write-protection*/
     __HAL_RTC_WRITEPROTECTION_DISABLE(&hrtc);
     /*Wait until the shadow registers are synchronized*/
@@ -87,11 +94,6 @@ void Power_Controller_StopMode(void) {
     /* Resume Tick interrupt if disabled prior to sleep mode entry */
     HAL_ResumeTick();
 
-    if (buttonWakeUp) {
-        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
-    } else {
-        System_Event_Trigger_Event(EVENT_RTC_WAKEUP);
-    }
 
     /* Reinitialize all Subsystems */
     Gpio_Subsystem_Init();
@@ -100,6 +102,13 @@ void Power_Controller_StopMode(void) {
     Adc_Subsystem_Init();
     I2c_Subsystem_Init();
 
+
+    if (buttonWakeUp) {
+        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
+    } else {
+        System_Event_Trigger_Event(EVENT_RTC_WAKEUP);
+    }
+
     LOG_DEBUG("Exiting STOP Mode now.");
-    
+
 }
