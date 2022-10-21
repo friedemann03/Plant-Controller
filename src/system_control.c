@@ -77,7 +77,9 @@ _Noreturn void System_Control_Start(void) {
             currentState = newState;                                // update current state
             LOG_DEBUG("New State: %d", newState);
         }
-        Shell_Read_Function();                                      // receive characters for shell
+        if (Shell_Read_Function()) {                                // if a character was received in the shell
+            Timeout_Controller_Reset();                             // reset the idle timeout
+        }
     }
 }
 
