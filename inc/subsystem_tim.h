@@ -13,7 +13,7 @@
 #define TIMER_2              2
 //#define TIMER_3              3
 //#define TIMER_4              4
-//#define TIMER_5              5
+#define TIMER_5              5
 //#define TIMER_6              6
 //#define TIMER_7              7
 //#define TIMER_8              8
@@ -37,7 +37,11 @@ void Tim_Enable(bool status, uint32_t index);
 
 void Tim_EnableIRQ(bool status, uint32_t timerIRQn);
 
+void Tim_ResetCounter(uint32_t index);
+
 __attribute__((weak)) void Tim_2_Callback(void);
+
+__attribute__((weak)) void Tim_5_Callback(void);
 
 __attribute__((weak)) void Tim_10_Callback(void);
 

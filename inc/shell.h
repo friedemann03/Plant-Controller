@@ -18,7 +18,7 @@
 /* Exported functions prototypes ---------------------------------------------*/
 void Shell_Init(void);
 
-void Shell_Read_Function(void);
+bool Shell_Read_Function(void);
 
 
 #endif //MES_BLINKY_SHELL_H

@@ -74,6 +74,7 @@ list(APPEND SOURCES
         src/controller_display.c
         src/controller_soil.c
         src/controller_power.c
+        src/controller_timeout.c
         src/module_led.c
         src/module_sr04.c
         src/module_lcd.c
