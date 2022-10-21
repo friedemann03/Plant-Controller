@@ -7,12 +7,11 @@
 
 #endif //PLANT_CONTROLLER_CONTROLLER_TIMEOUT_H
 
+#include "stdbool.h"
 
 
 void Timeout_Controller_Init(void);
 
-void Timeout_Controller_Start(void);
-
-void Timeout_Controller_Reset(void);
+void Timeout_Controller_Enable(bool status);
 
 void Timeout_Controller_Stop(void);
