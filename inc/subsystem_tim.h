@@ -39,6 +39,8 @@ void Tim_EnableIRQ(bool status, uint32_t timerIRQn);
 
 void Tim_ResetCounter(uint32_t index);
 
+void Tim_Set_ReloadValue(uint32_t index,  uint32_t newReloadValue);
+
 __attribute__((weak)) void Tim_2_Callback(void);
 
 __attribute__((weak)) void Tim_3_Callback(void);

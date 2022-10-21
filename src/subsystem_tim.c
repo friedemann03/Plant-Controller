@@ -72,6 +72,10 @@ void Tim_ResetCounter(uint32_t index) {
     LL_TIM_ClearFlag_UPDATE((TIM_TypeDef *) timerMap[index]);
 }
 
+void Tim_Set_ReloadValue(uint32_t index, uint32_t newReloadValue) {
+    LL_TIM_SetAutoReload((TIM_TypeDef *) timerMap[index], newReloadValue);
+}
+
 
 
 #include "subsystem_tim.h"
