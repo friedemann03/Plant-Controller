@@ -7,6 +7,7 @@
 
 void Power_Controller_StopMode(void);
 
+void Power_Controller_Set_ButtonWakeUp(void);
 
 
 

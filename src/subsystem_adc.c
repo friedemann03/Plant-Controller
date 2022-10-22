@@ -3,6 +3,7 @@
 //
 
 #include "subsystem_adc.h"
+#include "adc.h"
 
 
 void Adc_Subsystem_Init(void) {

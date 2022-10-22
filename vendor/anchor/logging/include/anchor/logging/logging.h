@@ -60,11 +60,18 @@ typedef struct {
 // Change the logging threshold for the current module
 #define LOG_SET_LEVEL(LEVEL) logging_module_set_level_impl(&_logging_logger, LEVEL)
 
+#ifndef UNIT_TESTS
 // Macros for logging at each level
 #define LOG_DEBUG(...) _LOG_LEVEL_IMPL(LOGGING_LEVEL_DEBUG, __VA_ARGS__)
 #define LOG_INFO(...) _LOG_LEVEL_IMPL(LOGGING_LEVEL_INFO, __VA_ARGS__)
 #define LOG_WARN(...) _LOG_LEVEL_IMPL(LOGGING_LEVEL_WARN, __VA_ARGS__)
 #define LOG_ERROR(...) _LOG_LEVEL_IMPL(LOGGING_LEVEL_ERROR, __VA_ARGS__)
+#else
+#define LOG_DEBUG(...)
+#define LOG_INFO(...)
+#define LOG_WARN(...)
+#define LOG_ERROR(...)
+#endif
 
 // Internal implementation macros / functions which are called via the macros above
 #define _LOG_LEVEL_IMPL(LEVEL, ...) logging_log_impl(&_logging_logger, LEVEL, FILENAME, __LINE__, __VA_ARGS__)

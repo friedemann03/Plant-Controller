@@ -3,6 +3,7 @@
 //
 
 #include "controller_soil.h"
+#include "system_events.h"
 
 
 static volatile uint32_t soilDryLimit = 0;
@@ -23,6 +24,14 @@ uint32_t Soil_Controller_GetSoilMoisture(void) {
 
 void Soil_Controller_Update(void) {
     Moisture_Update(&moistSensor);
+
+    if (Moisture_Get_Value(&moistSensor) > soilDryLimit) {
+        System_Event_Trigger_Event(EVENT_SOIL_DRY);
+    }
+
+    if (Moisture_Get_Value(&moistSensor) < soilMoistLimit) {
+        System_Event_Trigger_Event(EVENT_SOIL_WET);
+    }
 }
 
 
