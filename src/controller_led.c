@@ -26,6 +26,7 @@ void Led_Controller_DeInit(void) {
 }
 
 void Led_Controller_Enable(bool status) {
+    Tim_EnableIRQ(status, TIMER_10);
     Tim_Enable(status, TIMER_10);
     if (!status) {
         Led_TurnOff(&led);
