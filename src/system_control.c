@@ -6,6 +6,8 @@
 #include "unit_testing.h"
 #include "stdbool.h"
 
+#include "config.h"
+
 #include "controller_tank.h"
 #include "controller_display.h"
 #include "controller_led.h"
@@ -66,6 +68,10 @@ void System_Control_Init(void) {
     Timeout_Controller_Init();
     Button_Controller_Init();
     Watering_Controller_Init();
+
+    Tank_Controller_Set_EmptyLimit(TANK_EMPTY);
+    Soil_Controller_Set_DryLimit(SOIL_DRY);
+    Soil_Controller_Set_MoistLimit(SOIL_WET);
 }
 
 _Noreturn void System_Control_Start(void) {
