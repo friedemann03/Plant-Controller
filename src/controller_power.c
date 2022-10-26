@@ -11,30 +11,20 @@
 #include "subsystem_adc.h"
 #include "subsystem_i2c.h"
 #include "subsystem_tim.h"
-#include "log_module.h"
-#include "controller_led.h"
-#include "controller_tank.h"
-#include "controller_button.h"
 #include "subsystem_rtc.h"
+#include "log_module.h"
+#include "controller_button.h"
 #include "system_events.h"
 
 
 extern void SystemClock_Config(void);
 
 
-static volatile bool buttonWakeUp;
-
-void Power_Controller_Set_ButtonWakeUp(void) {
-    buttonWakeUp = true;
-}
+static volatile bool rtcWakeup;
 
 void Power_Controller_StopMode(void) {
 
     LOG_DEBUG("Entering STOP Mode now.");
-
-    // enabling the wakeup function in the button controller
-    Button_Controller_EnableWakeUp();
-    buttonWakeUp = false;
 
     // Disable all subsystems and GPIOs (setting them to analog) to minimize power consumption
     Uart_Subsystem_DeInit();
@@ -102,13 +92,23 @@ void Power_Controller_StopMode(void) {
     Adc_Subsystem_Init();
     I2c_Subsystem_Init();
 
-
-    if (buttonWakeUp) {
-        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
-    } else {
+    if (rtcWakeup) {
         System_Event_Trigger_Event(EVENT_RTC_WAKEUP);
+        LOG_DEBUG("RTC Wakeup");
+    } else {
+        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
+        LOG_DEBUG("Button Wakeup");
     }
+
+    rtcWakeup = false;
 
     LOG_DEBUG("Exiting STOP Mode now.");
 
+}
+
+void Rtc_WakeUp_Callback(void) {
+    rtcWakeup = true;
+    if (!LL_GPIO_IsInputPinSet(GPIOC, GPIO_PIN_13)) {
+        rtcWakeup = false;
+    }
 }
