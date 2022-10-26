@@ -6,7 +6,6 @@
 #include "subsystem_tim.h"
 #include "subsystem_gpio.h"
 #include "controller_display.h"
-#include "controller_power.h"
 #include "system_events.h"
 #include "log_module.h"
 
@@ -28,17 +27,13 @@ static void secondStage(void);
 static void thirdStage(void);
 
 
-static uint8_t stage;
 static void(*interruptHandlerFunc)(void);
 
 
 static volatile bool controllerEnabled = false;
-static volatile bool wakeupEnabled = false;
-
 
 void Button_Controller_Init(void) {
     controllerEnabled = false;
-    wakeupEnabled = false;
     interruptHandlerFunc = firstStage;
     button.port = USER_BTN_GPIO_Port;
     button.pin = USER_BTN_Pin;
@@ -51,11 +46,6 @@ void Button_Controller_Init(void) {
 void Button_Controller_Enable(bool status) {
     controllerEnabled = status;
 }
-
-void Button_Controller_EnableWakeUp(void) {
-    wakeupEnabled = true;
-}
-
 
 static void shortButtonPress(void) {
     Display_Controller_Cycle();
@@ -100,10 +90,7 @@ static void thirdStage(void) {
 }
 
 void Exti_15_10_Callback(void) {
-    if (wakeupEnabled) {
-        wakeupEnabled = false;
-        Power_Controller_Set_ButtonWakeUp();
-    } else if (controllerEnabled) {
+    if (controllerEnabled) {
         LOG_DEBUG("Button was pressed");
         Tim_ResetCounter(BUTTON_TIMER);
         Tim_Set_ReloadValue(BUTTON_TIMER, RELOAD_VALUE_ONE);
