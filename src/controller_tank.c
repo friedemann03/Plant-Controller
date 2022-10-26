@@ -25,14 +25,12 @@ void Tank_Controller_Init(void) {
     Tim_Enable(false, TIMER_11);
     SR04_Init(&distanceSensor, SENSOR_I2C_ADDRESS);
     isCurrentMeasurementDone = true;
-    emptyLimit = 0; // TODO Needs to be set depending on tank
 }
 
 void Tank_Controller_Update(void) {
     if (isCurrentMeasurementDone) {
         isCurrentMeasurementDone = false;
         SR04_Start_Measurement(&distanceSensor);
-//        LOG_DEBUG("Last distance: %u mm", (unsigned int) distanceSensor.actualData);
         Tim_EnableIRQ(true, TIMER_11);
         Tim_Enable(true, TIMER_11);
     }
