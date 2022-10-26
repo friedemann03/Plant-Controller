@@ -130,12 +130,15 @@ STATIC void Enter_New_State(eState newState) {
             Button_Controller_Enable(false);
             Led_Controller_EnableFastMode(true);
             Led_Controller_Enable(true);
+            Display_Controller_Show_Watering();
             break;
         case STATE_ERROR_TANK_EMPTY:
             Led_Controller_EnableLedOn(true);
             Led_Controller_Enable(true);
+            Display_Controller_Show_TankError();
             break;
         case STATE_SYSTEM_ERROR:
+            Display_Controller_Show_SystemError();
             LOG_ERROR(CTRL_TEXT_BRIGHT_RED "SYSTEM FAILURE" CTRL_RESET);
             break;
 
@@ -191,6 +194,7 @@ STATIC void Exit_Current_State(eState currentState) {
         case STATE_ACTIVE:
             Led_Controller_Enable(false);
             Timeout_Controller_Enable(false);
+            Display_Controller_DisableScreenUpdating();
             break;
         case STATE_PERIODIC_CHECK:
             break;
