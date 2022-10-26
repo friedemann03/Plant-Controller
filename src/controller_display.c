@@ -61,6 +61,32 @@ void Display_Controller_Enable(bool status) {
     Tim_Enable(status, TIMER_2);
 }
 
+void Display_Controller_DisableScreenUpdating(void) {
+    Tim_EnableIRQ(false, TIMER_2);
+    Tim_Enable(false, TIMER_2);
+}
+
+void Display_Controller_Show_TankError(void) {
+    char lines[2][LINE_LENGTH] = {"     ERROR      ", "   TANK EMPTY   "};
+
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
+}
+
+void Display_Controller_Show_Watering(void) {
+    char lines[2][LINE_LENGTH] = {"Currently", "Watering Plant!"};
+
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
+}
+
+void Display_Controller_Show_SystemError(void) {
+    char lines[2][LINE_LENGTH] = {"     ERROR      ", " SYSTEM FAILED "};
+
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
+}
+
 /* Private Functions ---------------------------------------------------------*/
 static void test_function(void) {
     Lcd_Set_Line(&lcdScreen, 0);

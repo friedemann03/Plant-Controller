@@ -13,4 +13,12 @@ void Display_Controller_Cycle(void);
 
 void Display_Controller_Enable(bool status);
 
+void Display_Controller_Show_TankError(void);
+
+void Display_Controller_Show_Watering(void);
+
+void Display_Controller_Show_SystemError(void);
+
+void Display_Controller_DisableScreenUpdating(void);
+
 #endif //PLANT_CONTROLLER_CONTROLLER_DISPLAY_H
