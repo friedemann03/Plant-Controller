@@ -13,6 +13,7 @@
 #include "controller_soil.h"
 #include "controller_timeout.h"
 #include "controller_button.h"
+#include "controller_watering.h"
 
 #include "log_module.h"
 #include "log_module_colors.h"
@@ -39,7 +40,7 @@ STATIC volatile bool events[EVENT_ERROR + 1] = {0};
 /* State Machine Table */
 
 eState stateMachineTable[STATE_SYSTEM_ERROR + 1][EVENT_ERROR + 1] = {
-        {STATE_SLEEP,   STATE_SLEEP,  STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,  STATE_WATERING,STATE_ACTIVE,STATE_ACTIVE,        STATE_SYSTEM_ERROR},
+        {STATE_SLEEP,   STATE_SLEEP,  STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,  STATE_WATERING,STATE_ACTIVE,STATE_ACTIVE,         STATE_SYSTEM_ERROR},
         {STATE_SLEEP,   STATE_ACTIVE,  STATE_SLEEP,            STATE_SLEEP,   STATE_SLEEP,   STATE_SLEEP, STATE_PERIODIC_CHECK,STATE_SYSTEM_ERROR},
         {STATE_SLEEP,   STATE_SLEEP,   STATE_ERROR_TANK_EMPTY, STATE_SLEEP,   STATE_WATERING,STATE_SLEEP, STATE_SLEEP,         STATE_SYSTEM_ERROR},
         {STATE_WATERING,STATE_WATERING,STATE_ERROR_TANK_EMPTY, STATE_WATERING,STATE_WATERING,STATE_ACTIVE,STATE_WATERING,      STATE_SYSTEM_ERROR},
@@ -64,6 +65,7 @@ void System_Control_Init(void) {
     Soil_Controller_Init();
     Timeout_Controller_Init();
     Button_Controller_Init();
+    Watering_Controller_Init();
 }
 
 _Noreturn void System_Control_Start(void) {
@@ -160,7 +162,7 @@ STATIC void Execute_Current_State(eState currentState) {
             break;
         case STATE_WATERING:
             // water the plant and then update the soil controller to clear event if necessary
-            //Watering_Controller_WaterPlant(); // waters plant with small drops TODO
+            Watering_Controller_WaterPlant();
             Soil_Controller_Update();
             break;
         case STATE_ERROR_TANK_EMPTY:
