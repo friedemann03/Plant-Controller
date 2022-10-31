@@ -6,6 +6,8 @@
 #include "unit_testing.h"
 #include "stdbool.h"
 
+#include "config.h"
+
 #include "controller_tank.h"
 #include "controller_display.h"
 #include "controller_led.h"
@@ -13,6 +15,7 @@
 #include "controller_soil.h"
 #include "controller_timeout.h"
 #include "controller_button.h"
+#include "controller_watering.h"
 
 #include "log_module.h"
 #include "log_module_colors.h"
@@ -39,7 +42,7 @@ STATIC volatile bool events[EVENT_ERROR + 1] = {0};
 /* State Machine Table */
 
 eState stateMachineTable[STATE_SYSTEM_ERROR + 1][EVENT_ERROR + 1] = {
-        {STATE_SLEEP,   STATE_SLEEP,  STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,  STATE_WATERING,STATE_ACTIVE,STATE_ACTIVE,        STATE_SYSTEM_ERROR},
+        {STATE_SLEEP,   STATE_SLEEP,  STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,  STATE_WATERING,STATE_ACTIVE,STATE_ACTIVE,         STATE_SYSTEM_ERROR},
         {STATE_SLEEP,   STATE_ACTIVE,  STATE_SLEEP,            STATE_SLEEP,   STATE_SLEEP,   STATE_SLEEP, STATE_PERIODIC_CHECK,STATE_SYSTEM_ERROR},
         {STATE_SLEEP,   STATE_SLEEP,   STATE_ERROR_TANK_EMPTY, STATE_SLEEP,   STATE_WATERING,STATE_SLEEP, STATE_SLEEP,         STATE_SYSTEM_ERROR},
         {STATE_WATERING,STATE_WATERING,STATE_ERROR_TANK_EMPTY, STATE_WATERING,STATE_WATERING,STATE_ACTIVE,STATE_WATERING,      STATE_SYSTEM_ERROR},
@@ -64,6 +67,11 @@ void System_Control_Init(void) {
     Soil_Controller_Init();
     Timeout_Controller_Init();
     Button_Controller_Init();
+    Watering_Controller_Init();
+
+    Tank_Controller_Set_EmptyLimit(TANK_EMPTY);
+    Soil_Controller_Set_DryLimit(SOIL_DRY);
+    Soil_Controller_Set_MoistLimit(SOIL_WET);
 }
 
 _Noreturn void System_Control_Start(void) {
@@ -122,12 +130,15 @@ STATIC void Enter_New_State(eState newState) {
             Button_Controller_Enable(false);
             Led_Controller_EnableFastMode(true);
             Led_Controller_Enable(true);
+            Display_Controller_Show_Watering();
             break;
         case STATE_ERROR_TANK_EMPTY:
             Led_Controller_EnableLedOn(true);
             Led_Controller_Enable(true);
+            Display_Controller_Show_TankError();
             break;
         case STATE_SYSTEM_ERROR:
+            Display_Controller_Show_SystemError();
             LOG_ERROR(CTRL_TEXT_BRIGHT_RED "SYSTEM FAILURE" CTRL_RESET);
             break;
 
@@ -160,7 +171,7 @@ STATIC void Execute_Current_State(eState currentState) {
             break;
         case STATE_WATERING:
             // water the plant and then update the soil controller to clear event if necessary
-            //Watering_Controller_WaterPlant(); // waters plant with small drops TODO
+            Watering_Controller_WaterPlant();
             Soil_Controller_Update();
             break;
         case STATE_ERROR_TANK_EMPTY:
@@ -183,6 +194,7 @@ STATIC void Exit_Current_State(eState currentState) {
         case STATE_ACTIVE:
             Led_Controller_Enable(false);
             Timeout_Controller_Enable(false);
+            Display_Controller_DisableScreenUpdating();
             break;
         case STATE_PERIODIC_CHECK:
             break;

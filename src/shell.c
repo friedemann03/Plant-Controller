@@ -54,12 +54,14 @@ CONSOLE_COMMAND_DEF(toggle_display, "Turns display on or off.",
                     CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
 CONSOLE_COMMAND_DEF(enter_STOPMode, "Enters STOP Mode, can be woken up by pressing the USER Button.");
 CONSOLE_COMMAND_DEF(get_time, "Logs the current time of the RTC.");
-CONSOLE_COMMAND_DEF(set_time, "Logs the current time of the RTC.",
+CONSOLE_COMMAND_DEF(set_time, "Sets the current time of the RTC.",
                     CONSOLE_INT_ARG_DEF(hours, "Value between 0 and 24."),
                     CONSOLE_INT_ARG_DEF(minutes, "Value between 0 and 60."));
 CONSOLE_COMMAND_DEF(trigger_event, "Triggers an event.",
                     CONSOLE_INT_ARG_DEF(event, "according to enum typedef for events."));
 CONSOLE_COMMAND_DEF(reset_timout, "Resetting the idle timeout.");
+CONSOLE_COMMAND_DEF(set_rtc_interval, "Sets the wakeup interval of the rtc.",
+                    CONSOLE_INT_ARG_DEF(intervalInSecs, "Interval in seconds."));
 
 /**
  * @brief LED command handler.
@@ -129,6 +131,10 @@ static void reset_timout_command_handler(const reset_timout_args_t *args) {
     Timeout_Controller_Reset();
 }
 
+static void set_rtc_interval_command_handler(const set_rtc_interval_args_t *args) {
+    Rtc_Subsystem_SetWakeUpInterval(args->intervalInSecs);
+}
+
 
 
 
@@ -169,6 +175,7 @@ void Shell_Init(void) {
     console_command_register(enter_STOPMode);
     console_command_register(get_time);
     console_command_register(set_time);
+    console_command_register(set_rtc_interval);
     console_command_register(trigger_event);
     console_command_register(reset_timout);
 }

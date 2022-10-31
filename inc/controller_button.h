@@ -11,6 +11,4 @@ void Button_Controller_Init(void);
 
 void Button_Controller_Enable(bool status);
 
-void Button_Controller_EnableWakeUp(void);
-
 #endif //PLANT_CONTROLLER_CONTROLLER_BUTTON_H

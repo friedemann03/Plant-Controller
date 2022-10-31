@@ -21,4 +21,6 @@ sTime_t Rtc_Get_Time(void);
 
 void Rtc_Set_Time(sTime_t time);
 
+__attribute__((weak)) void Rtc_WakeUp_Callback(void);
+
 #endif //PLANT_CONTROLLER_SUBSYSTEM_RTC_H
