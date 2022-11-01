@@ -17,6 +17,8 @@
 #include "controller_button.h"
 #include "controller_watering.h"
 
+#include "subsystem_rtc.h"
+
 #include "log_module.h"
 #include "log_module_colors.h"
 #include "shell.h"
@@ -125,6 +127,9 @@ STATIC void Enter_New_State(eState newState) {
             Display_Controller_Enable(false);
             Timeout_Controller_Enable(false);
             Button_Controller_Enable(false);
+
+            sTime_t startTime = Rtc_Get_Time();
+            LOG_DEBUG("Current System Time is %d:%d:%d", startTime.hours, startTime.minutes, startTime.seconds);
             break;
         case STATE_WATERING:
             Button_Controller_Enable(false);
@@ -198,7 +203,10 @@ STATIC void Exit_Current_State(eState currentState) {
             break;
         case STATE_PERIODIC_CHECK:
             break;
-        case STATE_SLEEP:
+        case STATE_SLEEP: {
+            sTime_t exitTime = Rtc_Get_Time();
+            LOG_DEBUG("Current System Time is %d:%d:%d", exitTime.hours, exitTime.minutes, exitTime.seconds);
+        }
             break;
         case STATE_WATERING:
             Led_Controller_EnableFastMode(false);
