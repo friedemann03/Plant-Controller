@@ -188,8 +188,6 @@ STATIC void Execute_Current_State(eState currentState) {
     }
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "bugprone-branch-clone"
 /**
  * @brief Executes the Exiting Stage for the current State
  * @param currentState eState typedef enum state
@@ -220,5 +218,4 @@ STATIC void Exit_Current_State(eState currentState) {
             break;
     }
 }
-#pragma clang diagnostic pop
 
