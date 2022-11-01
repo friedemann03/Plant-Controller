@@ -9,6 +9,7 @@ When inactive for a while, it will go to sleep.
 Every 10 minutes it wakes up and checks for the soil moisture, the water level of the tank and then goes back to sleep again. 
 If the soil moisture is below the set value, it will water the plant and go into active mode.
 If the tank is empty, the system will notify the user by blinking an LED and displaying a warning message on the LCD screen while also preventing the system from working until the tank is filled again.
+The system needs the user to push the button for a long time to tell it, the tank has been filled again.
 
 The user has two ways to interact with the system. First, by pressing a button the system gets active (when in sleep mode)
 and displays information on an LCD screen which you can cycle through by pressing the button again. 
