@@ -17,6 +17,8 @@
 #include "controller_button.h"
 #include "controller_watering.h"
 
+#include "subsystem_rtc.h"
+
 #include "log_module.h"
 #include "log_module_colors.h"
 #include "shell.h"
@@ -46,7 +48,7 @@ eState stateMachineTable[STATE_SYSTEM_ERROR + 1][EVENT_ERROR + 1] = {
         {STATE_SLEEP,   STATE_ACTIVE,  STATE_SLEEP,            STATE_SLEEP,   STATE_SLEEP,   STATE_SLEEP, STATE_PERIODIC_CHECK,STATE_SYSTEM_ERROR},
         {STATE_SLEEP,   STATE_SLEEP,   STATE_ERROR_TANK_EMPTY, STATE_SLEEP,   STATE_WATERING,STATE_SLEEP, STATE_SLEEP,         STATE_SYSTEM_ERROR},
         {STATE_WATERING,STATE_WATERING,STATE_ERROR_TANK_EMPTY, STATE_WATERING,STATE_WATERING,STATE_ACTIVE,STATE_WATERING,      STATE_SYSTEM_ERROR},
-        {STATE_ERROR_TANK_EMPTY,STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ACTIVE,       STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_SYSTEM_ERROR},
+        {STATE_ERROR_TANK_EMPTY,STATE_ACTIVE, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY,       STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_ERROR_TANK_EMPTY, STATE_SYSTEM_ERROR},
         {STATE_SYSTEM_ERROR,    STATE_SYSTEM_ERROR,     STATE_SYSTEM_ERROR,     STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR,     STATE_SYSTEM_ERROR, STATE_SYSTEM_ERROR,         STATE_SYSTEM_ERROR},
         };
 
@@ -90,6 +92,7 @@ _Noreturn void System_Control_Start(void) {
         if (Shell_Read_Function()) {                                // if a character was received in the shell
             Timeout_Controller_Reset();                             // reset the idle timeout
         }
+        LOG_DEBUG("Current Soil Moisture: %lu", Soil_Controller_GetSoilMoisture());
     }
 }
 
@@ -125,6 +128,9 @@ STATIC void Enter_New_State(eState newState) {
             Display_Controller_Enable(false);
             Timeout_Controller_Enable(false);
             Button_Controller_Enable(false);
+
+            sTime_t startTime = Rtc_Get_Time();
+            LOG_DEBUG("Current System Time is %d:%d:%d", startTime.hours, startTime.minutes, startTime.seconds);
             break;
         case STATE_WATERING:
             Button_Controller_Enable(false);
@@ -183,8 +189,6 @@ STATIC void Execute_Current_State(eState currentState) {
     }
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "bugprone-branch-clone"
 /**
  * @brief Executes the Exiting Stage for the current State
  * @param currentState eState typedef enum state
@@ -198,7 +202,10 @@ STATIC void Exit_Current_State(eState currentState) {
             break;
         case STATE_PERIODIC_CHECK:
             break;
-        case STATE_SLEEP:
+        case STATE_SLEEP: {
+            sTime_t exitTime = Rtc_Get_Time();
+            LOG_DEBUG("Current System Time is %d:%d:%d", exitTime.hours, exitTime.minutes, exitTime.seconds);
+        }
             break;
         case STATE_WATERING:
             Led_Controller_EnableFastMode(false);
@@ -212,5 +219,4 @@ STATIC void Exit_Current_State(eState currentState) {
             break;
     }
 }
-#pragma clang diagnostic pop
 
