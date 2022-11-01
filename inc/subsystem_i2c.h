@@ -5,9 +5,11 @@
 #ifndef PLANT_CONTROLLER_SUBSYSTEM_I2C_H
 #define PLANT_CONTROLLER_SUBSYSTEM_I2C_H
 
-#include "i2c.h"
+#include "stdint.h"
 
 void I2c_Subsystem_Init(void);
+
+void I2c_Subsystem_DeInit(void);
 
 void I2c1_Transfer_nBytes(uint8_t address, uint8_t *sendBuffer, uint8_t amount);
 

@@ -11,16 +11,18 @@ If the soil moisture is below the set value, it will water the plant and go into
 If the tank is empty, the system will notify the user by blinking an LED and displaying a warning message on the LCD screen while also preventing the system from working until the tank is filled again.
 
 The user has two ways to interact with the system. First, by pressing a button the system gets active (when in sleep mode)
-and displays information on an LCD screen which you can cycle through by pressing the button again. Second, by interfacing to it with a UART Terminal, that is used
-for debugging and setting the moisture level at which the system should water the plant. It will also activate the system when it is in sleep mode.
+and displays information on an LCD screen which you can cycle through by pressing the button again. 
+A long press on the button will cause the system to go into sleep mode.
+Second, by interfacing to it with a UART Terminal, that is used for debugging and setting the moisture level at which the system should water the plant.
 
-For the watering itself, the system uses a small tank and a peristaltic pump. The water level in the tank is monitored
-by an ultrasonic distance sensor, meaning the system is dependent on knowing the tank size. If the tank is empty, the system
-will notify the user by blinking an LED and displaying a warning message on the LCD screen.
+For the watering itself, the system uses a small tank and a peristaltic pump. 
+The water level in the tank is monitored by an ultrasonic distance sensor. 
+If the tank is empty, the system will notify the user by blinking an LED and displaying a warning message on the LCD screen.
+The distance at which the system considers the tank to be empty is set via the UART Terminal.
 
 The system also makes predictions about when the next watering is likely to occur, based on previous times, how much water is needed on average and how long the remaining water in the tank will last.
 This information is also available on the LCD Screen by cycling through it with the button or by requesting them over the UART Terminal.
-It can be used to calculate how much water the plant will probably need if you go on vacation.
+It can be used to calculate how much water the plant will probably need for example if you go on vacation.
 
 To find out what soil moisture level is correct you need to calibrate the system with experimental data of dry and moist soil and then figure out a good moisture value.
 

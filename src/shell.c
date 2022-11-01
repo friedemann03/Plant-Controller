@@ -11,7 +11,12 @@
 #include "controller_tank.h"
 #include "controller_display.h"
 #include "controller_soil.h"
+#include "controller_power.h"
+#include "controller_timeout.h"
+#include "subsystem_rtc.h"
 #include "log_module.h"
+#include "system_events.h"
+#include "system_control.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -47,7 +52,16 @@ CONSOLE_COMMAND_DEF(get_moisture, "Logs the last measured soil moisture from the
 CONSOLE_COMMAND_DEF(cycle_display, "Cycles information displayed on display.");
 CONSOLE_COMMAND_DEF(toggle_display, "Turns display on or off.",
                     CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
-
+CONSOLE_COMMAND_DEF(enter_STOPMode, "Enters STOP Mode, can be woken up by pressing the USER Button.");
+CONSOLE_COMMAND_DEF(get_time, "Logs the current time of the RTC.");
+CONSOLE_COMMAND_DEF(set_time, "Sets the current time of the RTC.",
+                    CONSOLE_INT_ARG_DEF(hours, "Value between 0 and 24."),
+                    CONSOLE_INT_ARG_DEF(minutes, "Value between 0 and 60."));
+CONSOLE_COMMAND_DEF(trigger_event, "Triggers an event.",
+                    CONSOLE_INT_ARG_DEF(event, "according to enum typedef for events."));
+CONSOLE_COMMAND_DEF(reset_timout, "Resetting the idle timeout.");
+CONSOLE_COMMAND_DEF(set_rtc_interval, "Sets the wakeup interval of the rtc.",
+                    CONSOLE_INT_ARG_DEF(intervalInSecs, "Interval in seconds."));
 
 /**
  * @brief LED command handler.
@@ -78,6 +92,52 @@ static void get_moisture_command_handler(const get_moisture_args_t *args) {
     LOG_DEBUG("Measured soil moisture: %u", (unsigned int) Soil_Controller_GetSoilMoisture());
 }
 
+static void enter_STOPMode_command_handler(const enter_STOPMode_args_t *args) {
+    LOG_DEBUG("Entering STOP Mode.");
+    Power_Controller_StopMode();
+    LOG_DEBUG("Exiting STOP Mode");
+    /* Reinitialize all Controllers that use Interrupts */
+    Led_Controller_Init();
+    Tank_Controller_Init();
+}
+
+static void get_time_command_handler(const get_time_args_t *args) {
+    sTime_t time = Rtc_Get_Time();
+    LOG_DEBUG("Current RTC Time: %d-%d-%d", time.hours, time.minutes, time.seconds);
+}
+
+static void set_time_command_handler(const set_time_args_t *args) {
+    sTime_t time;
+    time.hours = 0;
+    time.minutes = 0;
+    time.seconds = 0;
+
+    if (args->hours >= 0 && args->hours <= 24) {
+        time.hours = args->hours;
+    }
+
+    if (args->minutes >= 0 && args->minutes <= 60) {
+        time.minutes = args->minutes;
+    }
+
+    Rtc_Set_Time(time);
+}
+
+static void trigger_event_command_handler(const trigger_event_args_t *args) {
+    System_Event_Trigger_Event(args->event);
+}
+
+static void reset_timout_command_handler(const reset_timout_args_t *args) {
+    Timeout_Controller_Reset();
+}
+
+static void set_rtc_interval_command_handler(const set_rtc_interval_args_t *args) {
+    Rtc_Subsystem_SetWakeUpInterval(args->intervalInSecs);
+}
+
+
+
+
 
 /**
  * @brief Write function implementation. This function is called by console.c when needed. To separate console output
@@ -90,12 +150,15 @@ void Console_Write_Function(const char *str) {
 
 /**
  * @brief Read function implementation. Needs to be called on a regular basis to provide input data to the console.
+ * @return bool value if a new character got processed
  */
-void Shell_Read_Function(void) {
+bool Shell_Read_Function(void) {
     uint8_t inputChar;
     if (Uart_Receive_Char(&inputChar)) {
         console_process(&inputChar, 1);
+        return true;
     }
+    return false;
 }
 
 /**
@@ -109,4 +172,10 @@ void Shell_Init(void) {
     console_command_register(get_moisture);
     console_command_register(cycle_display);
     console_command_register(toggle_display);
+    console_command_register(enter_STOPMode);
+    console_command_register(get_time);
+    console_command_register(set_time);
+    console_command_register(set_rtc_interval);
+    console_command_register(trigger_event);
+    console_command_register(reset_timout);
 }

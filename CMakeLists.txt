@@ -67,10 +67,16 @@ include_directories(
 )
 
 list(APPEND SOURCES
+        src/system_control.c
+        src/system_events.c
         src/controller_led.c
         src/controller_tank.c
         src/controller_display.c
         src/controller_soil.c
+        src/controller_power.c
+        src/controller_timeout.c
+        src/controller_button.c
+        src/controller_watering.c
         src/module_led.c
         src/module_sr04.c
         src/module_lcd.c
@@ -81,6 +87,7 @@ list(APPEND SOURCES
         src/subsystem_uart.c
         src/subsystem_i2c.c
         src/subsystem_adc.c
+        src/subsystem_rtc.c
         src/log_module.c
         src/shell.c
         src/version.c
@@ -89,6 +96,7 @@ list(APPEND SOURCES
         Core/Src/tim.c
         Core/Src/i2c.c
         Core/Src/adc.c
+        Core/Src/rtc.c
         Core/Src/usart.c
         Core/Src/syscalls.c
         Core/Src/sysmem.c

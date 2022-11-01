@@ -26,13 +26,10 @@
 #include "subsystem_gpio.h"
 #include "subsystem_i2c.h"
 #include "subsystem_adc.h"
-#include "controller_led.h"
-#include "controller_tank.h"
-#include "controller_display.h"
-#include "controller_soil.h"
+#include "subsystem_rtc.h"
 #include "log_module.h"
-#include "shell.h"
 #include "version.h"
+#include "system_control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,26 +101,25 @@ int main(void)
   Tim_Subsystem_Init();
   I2c_Subsystem_Init();
   Adc_Subsystem_Init();
+  Rtc_Subsystem_Init();
 
-  Shell_Init();
-  Led_Controller_Init();
-  Tank_Controller_Init();
-  Display_Controller_Init();
-  Soil_Controller_Init();
+  System_Control_Init();
+  System_Control_Start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+#pragma ide diagnostic ignored "UnreachableCode"
   while (1)
   {
-    Shell_Read_Function();
-    Tank_Controller_Update();
-    Soil_Controller_Update();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
   }
+#pragma clang diagnostic pop
   /* USER CODE END 3 */
 }
 
@@ -144,6 +140,14 @@ void SystemClock_Config(void)
 
    /* Wait till HSI is ready */
   while(LL_RCC_HSI_IsReady() != 1)
+  {
+
+  }
+  LL_PWR_EnableBkUpAccess();
+  LL_RCC_LSE_Enable();
+
+   /* Wait till LSE is ready */
+  while(LL_RCC_LSE_IsReady() != 1)
   {
 
   }

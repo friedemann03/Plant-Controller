@@ -3,10 +3,15 @@
 //
 
 #include "subsystem_adc.h"
+#include "adc.h"
 
 
 void Adc_Subsystem_Init(void) {
     MX_ADC1_Init();
+}
+
+void Adc_Subsystem_DeInit(void) {
+    HAL_ADC_DeInit(&hadc1);
 }
 
 
