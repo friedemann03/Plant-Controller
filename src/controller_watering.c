@@ -25,5 +25,4 @@ void Watering_Controller_WaterPlant(void) {
     Water_Pump_Enable(&pump, true);
     LL_mDelay(PUMP_ACTIVE_DELAY);
     Water_Pump_Enable(&pump, false);
-    LL_mDelay(WAITING_FOR_SOIL_DELAY);
 }
