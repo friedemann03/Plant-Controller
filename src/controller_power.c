@@ -84,6 +84,13 @@ void Power_Controller_StopMode(void) {
     /* Resume Tick interrupt if disabled prior to sleep mode entry */
     HAL_ResumeTick();
 
+    if (!LL_GPIO_IsInputPinSet(GPIOC, GPIO_PIN_13)) { // Button is (still) pressed shortly after system wakeup
+        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
+        rtcWakeup = false;
+    } else { // if button is not pressed, system was woken up by rtc
+        System_Event_Trigger_Event(EVENT_RTC_WAKEUP);
+        rtcWakeup = true;
+    }
 
     /* Reinitialize all Subsystems */
     Gpio_Subsystem_Init();
@@ -93,10 +100,8 @@ void Power_Controller_StopMode(void) {
     I2c_Subsystem_Init();
 
     if (rtcWakeup) {
-        System_Event_Trigger_Event(EVENT_RTC_WAKEUP);
         LOG_DEBUG("RTC Wakeup");
     } else {
-        System_Event_Trigger_Event(EVENT_LONG_BUTTON_PRESS);
         LOG_DEBUG("Button Wakeup");
     }
 
@@ -107,8 +112,9 @@ void Power_Controller_StopMode(void) {
 }
 
 void Rtc_WakeUp_Callback(void) {
-    rtcWakeup = true;
-    if (!LL_GPIO_IsInputPinSet(GPIOC, GPIO_PIN_13)) {
+    if (LL_GPIO_IsInputPinSet(GPIOC, GPIO_PIN_13)) {
         rtcWakeup = false;
+    } else {
+        rtcWakeup = true;
     }
 }
