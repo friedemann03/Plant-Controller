@@ -92,7 +92,6 @@ _Noreturn void System_Control_Start(void) {
         if (Shell_Read_Function()) {                                // if a character was received in the shell
             Timeout_Controller_Reset();                             // reset the idle timeout
         }
-        LOG_DEBUG("Current Soil Moisture: %lu", Soil_Controller_GetSoilMoisture());
     }
 }
 
