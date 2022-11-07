@@ -176,8 +176,15 @@ STATIC void Execute_Current_State(eState currentState) {
             // when the function exits, the system is awake again
             break;
         case STATE_WATERING:
-            // water the plant and then update the soil controller to clear event if necessary
+            Tank_Controller_Update();
+
+            // water the plant
             Watering_Controller_WaterPlant();
+
+            // go into stop mode
+            Power_Controller_StopMode();
+
+            // check for soil moisture
             Soil_Controller_Update();
             break;
         case STATE_ERROR_TANK_EMPTY:
