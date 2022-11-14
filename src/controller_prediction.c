@@ -46,7 +46,7 @@ uint32_t Prediction_Controller_GetHoursLeft(void) {
     return timeLeftInSeconds / 360;
 }
 
-/* Private Function Definitions ---------------------------------------*/
+/* Private Function Definitions --------------------------------------*/
 STATIC uint32_t get_AmountOfWaterings() {
     uint32_t avgTankLevelDifference = get_AverageOfTankLevels();
     if (avgTankLevelDifference == 0) {
@@ -72,3 +72,7 @@ STATIC uint32_t get_AverageOfArray(const uint32_t *array, uint32_t length) {
     return sum / length;
 }
 
+/* Timer Callback Function -------------------------------------------*/
+void Tim_4_Callback(void) {
+    timeInSeconds++;
+}
