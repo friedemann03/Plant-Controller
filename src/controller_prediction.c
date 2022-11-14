@@ -49,7 +49,7 @@ void Prediction_Controller_WateringStart(void) {
     startTankLevel = Tank_Controller_GetWaterLevel();
 }
 
-void Prediction_Controller_EndWatering(void) {
+void Prediction_Controller_WateringEnd(void) {
     // Time Start
     timeInSeconds = 0;
     Tim_EnableIRQ(true, PREDICTION_TIMER);
