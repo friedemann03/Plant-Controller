@@ -14,7 +14,7 @@
 #define WAITING_FOR_SOIL_DELAY INTERVAL_10M
 
 
-waterPump_t pump;
+static waterPump_t pump;
 
 void Watering_Controller_Init(void) {
     Water_Pump_Init(&pump, Gpio_Port_A, Gpio_Pin_8);
