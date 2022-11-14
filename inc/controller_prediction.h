@@ -7,7 +7,10 @@
 
 #include "stdint.h"
 
+void Prediction_Controller_Init(void);
+
 void Prediction_Controller_WateringStart(void);
+
 void Prediction_Controller_EndWatering(void);
 
 uint32_t Prediction_Controller_GetHoursLeft(void);

@@ -7,14 +7,16 @@
 /* Private Includes ---------------------------------------------------*/
 #include "controller_tank.h"
 #include "unit_testing.h"
+#include "subsystem_tim.h"
 
 /* Private Defines ----------------------------------------------------*/
 #define NUMBER_OF_MEASUREMENTS 10
+#define PREDICTION_TIMER TIMER_4
 
 /* Private Variables --------------------------------------------------*/
 STATIC uint32_t timeDifference[NUMBER_OF_MEASUREMENTS] = {0};
 STATIC uint32_t tankLevelDifference[NUMBER_OF_MEASUREMENTS] = {0};
-
+static uint32_t timeInSeconds = 0;
 
 
 /* Private Prototypes -------------------------------------------------*/
@@ -24,6 +26,12 @@ STATIC uint32_t get_AverageOfTankLevels();
 STATIC uint32_t get_AverageOfArray(const uint32_t *array, uint32_t length);
 
 /* Public Function Definitions ----------------------------------------*/
+void Prediction_Controller_Init(void) {
+    Tim_EnableIRQ(false, PREDICTION_TIMER);
+    Tim_Enable(false, PREDICTION_TIMER);
+    timeInSeconds = 0;
+}
+
 void Prediction_Controller_WateringStart(void) {
 
 }
