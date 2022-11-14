@@ -37,10 +37,34 @@ void Prediction_Controller_Init(void) {
 }
 
 void Prediction_Controller_WateringStart(void) {
+    // Time End
+    Tim_Enable(false, PREDICTION_TIMER);
+    Tim_Enable(false, PREDICTION_TIMER);
+    uint32_t timeSinceLastWatering = timeInSeconds;
+    index_Times = (index_Times + 1) % NUMBER_OF_MEASUREMENTS;
+    timeInBetweenWaterings[index_Times] = timeSinceLastWatering;
+    timeInSeconds = 0;
 
+    // Tank Start
+    startTankLevel = Tank_Controller_GetWaterLevel();
 }
-void Prediction_Controller_EndWatering(void) {
 
+void Prediction_Controller_EndWatering(void) {
+    // Time Start
+    timeInSeconds = 0;
+    Tim_EnableIRQ(true, PREDICTION_TIMER);
+    Tim_Enable(true, PREDICTION_TIMER);
+
+    // Tank End
+    uint32_t currentTankLevel = Tank_Controller_GetWaterLevel();
+    uint32_t tankDifference;
+    if (currentTankLevel > startTankLevel) {
+        tankDifference = currentTankLevel - startTankLevel;
+    } else {
+        tankDifference = 0;
+    }
+    index_TankDiff = (index_TankDiff + 1) % NUMBER_OF_MEASUREMENTS;
+    tankLevelDifference[index_TankDiff] = tankDifference;
 }
 
 uint32_t Prediction_Controller_GetHoursLeft(void) {
