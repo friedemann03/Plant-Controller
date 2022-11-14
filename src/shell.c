@@ -13,10 +13,12 @@
 #include "controller_soil.h"
 #include "controller_power.h"
 #include "controller_timeout.h"
+#include "controller_watering.h"
 #include "subsystem_rtc.h"
 #include "log_module.h"
 #include "system_events.h"
 #include "system_control.h"
+#include "module_pump.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -62,6 +64,8 @@ CONSOLE_COMMAND_DEF(trigger_event, "Triggers an event.",
 CONSOLE_COMMAND_DEF(reset_timout, "Resetting the idle timeout.");
 CONSOLE_COMMAND_DEF(set_rtc_interval, "Sets the wakeup interval of the rtc.",
                     CONSOLE_INT_ARG_DEF(intervalInSecs, "Interval in seconds."));
+CONSOLE_COMMAND_DEF(pump, "Toggling on or off the pump.",
+                    CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
 
 /**
  * @brief LED command handler.
@@ -135,7 +139,11 @@ static void set_rtc_interval_command_handler(const set_rtc_interval_args_t *args
     Rtc_Subsystem_SetWakeUpInterval(args->intervalInSecs);
 }
 
-
+static void pump_command_handler(const pump_args_t *args) {
+    waterPump_t tmpPump;
+    Water_Pump_Init(&tmpPump, Gpio_Port_A, Gpio_Pin_8);
+    Water_Pump_Enable(&tmpPump, args->status);
+}
 
 
 
@@ -178,4 +186,5 @@ void Shell_Init(void) {
     console_command_register(set_rtc_interval);
     console_command_register(trigger_event);
     console_command_register(reset_timout);
+    console_command_register(pump);
 }
