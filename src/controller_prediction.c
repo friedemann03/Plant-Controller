@@ -8,22 +8,26 @@
 #include "controller_tank.h"
 #include "unit_testing.h"
 #include "subsystem_tim.h"
+#include <stdlib.h>
 
 /* Private Defines ----------------------------------------------------*/
 #define NUMBER_OF_MEASUREMENTS 10
 #define PREDICTION_TIMER TIMER_4
 
 /* Private Variables --------------------------------------------------*/
-STATIC uint32_t timeDifference[NUMBER_OF_MEASUREMENTS] = {0};
+STATIC uint32_t timeInBetweenWaterings[NUMBER_OF_MEASUREMENTS] = {0};
 STATIC uint32_t tankLevelDifference[NUMBER_OF_MEASUREMENTS] = {0};
+static uint32_t startTankLevel = 0;
 static uint32_t timeInSeconds = 0;
+static uint8_t index_TankDiff = 0;
+static uint8_t index_Times = 0;
 
 
 /* Private Prototypes -------------------------------------------------*/
 STATIC uint32_t get_AmountOfWaterings();
 STATIC uint32_t get_AverageOfTimes();
 STATIC uint32_t get_AverageOfTankLevels();
-STATIC uint32_t get_AverageOfArray(const uint32_t *array, uint32_t length);
+STATIC uint32_t get_AverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length);
 
 /* Public Function Definitions ----------------------------------------*/
 void Prediction_Controller_Init(void) {
@@ -57,17 +61,19 @@ STATIC uint32_t get_AmountOfWaterings() {
 }
 
 STATIC uint32_t get_AverageOfTimes() {
-    return get_AverageOfArray(timeDifference, NUMBER_OF_MEASUREMENTS);
+    return get_AverageOfArrayIgnoringZeros(timeInBetweenWaterings, NUMBER_OF_MEASUREMENTS);
 }
 
 STATIC uint32_t get_AverageOfTankLevels() {
-    return get_AverageOfArray(tankLevelDifference, NUMBER_OF_MEASUREMENTS);
+    return get_AverageOfArrayIgnoringZeros(tankLevelDifference, NUMBER_OF_MEASUREMENTS);
 }
 
-STATIC uint32_t get_AverageOfArray(const uint32_t *array, uint32_t length) {
+STATIC uint32_t get_AverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length) {
     uint32_t sum = 0;
     for (uint32_t i = 0; i < length; i++) {
-        sum += array[i];
+        if (array[i] != 0) {
+            sum += array[i];
+        }
     }
     return sum / length;
 }
