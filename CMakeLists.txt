@@ -77,6 +77,7 @@ list(APPEND SOURCES
         src/controller_timeout.c
         src/controller_button.c
         src/controller_watering.c
+        src/controller_prediction.c
         src/module_led.c
         src/module_sr04.c
         src/module_lcd.c
