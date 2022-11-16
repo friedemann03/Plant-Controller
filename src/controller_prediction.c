@@ -56,7 +56,7 @@ uint32_t Prediction_Controller_GetHoursLeft(void) {
     uint32_t avgTime = get_AverageOfTimes();
     uint32_t amountOfWaterings = get_AmountOfWaterings();
     uint32_t timeLeftInSeconds = avgTime * amountOfWaterings;
-    return timeLeftInSeconds / 360;
+    return timeLeftInSeconds / 3600;
 }
 
 /* Private Function Definitions --------------------------------------*/
