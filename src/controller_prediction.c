@@ -31,7 +31,7 @@ static void tankLevel_WateringStart(void);
 STATIC uint32_t get_AmountOfWaterings();
 STATIC uint32_t get_AverageOfTimes();
 STATIC uint32_t get_AverageOfTankLevels();
-STATIC uint32_t get_AverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length);
+STATIC uint32_t get_ceiledAverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length);
 
 /* Public Function Definitions ----------------------------------------*/
 void Prediction_Controller_Init(void) {
@@ -101,14 +101,14 @@ STATIC uint32_t get_AmountOfWaterings() {
 }
 
 STATIC uint32_t get_AverageOfTimes() {
-    return get_AverageOfArrayIgnoringZeros(timeInBetweenWaterings, NUMBER_OF_MEASUREMENTS);
+    return get_ceiledAverageOfArrayIgnoringZeros(timeInBetweenWaterings, NUMBER_OF_MEASUREMENTS);
 }
 
 STATIC uint32_t get_AverageOfTankLevels() {
-    return get_AverageOfArrayIgnoringZeros(tankLevelDifference, NUMBER_OF_MEASUREMENTS);
+    return get_ceiledAverageOfArrayIgnoringZeros(tankLevelDifference, NUMBER_OF_MEASUREMENTS);
 }
 
-STATIC uint32_t get_AverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length) {
+STATIC uint32_t get_ceiledAverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length) {
     uint32_t sum = 0;
     uint32_t actualLength = 0;
     for (uint32_t i = 0; i < length; i++) {
@@ -117,6 +117,7 @@ STATIC uint32_t get_AverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t 
             actualLength++;
         }
     }
+    sum += (actualLength / 2) + 1;
     return sum / actualLength;
 }
 
