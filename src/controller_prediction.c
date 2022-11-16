@@ -110,12 +110,14 @@ STATIC uint32_t get_AverageOfTankLevels() {
 
 STATIC uint32_t get_AverageOfArrayIgnoringZeros(const uint32_t *array, uint32_t length) {
     uint32_t sum = 0;
+    uint32_t actualLength = 0;
     for (uint32_t i = 0; i < length; i++) {
         if (array[i] != 0) {
             sum += array[i];
+            actualLength++;
         }
     }
-    return sum / length;
+    return sum / actualLength;
 }
 
 /* Timer Callback Function -------------------------------------------*/
