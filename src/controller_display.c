@@ -10,6 +10,7 @@
 #include "stdio.h"
 #include "controller_tank.h"
 #include "controller_soil.h"
+#include "controller_prediction.h"
 #include "subsystem_gpio.h"
 #include "subsystem_rtc.h"
 #include "subsystem_tim.h"
@@ -17,7 +18,7 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-#define NUMBER_OF_OUTPUTS 3
+#define NUMBER_OF_OUTPUTS 4
 #define LINE_LENGTH 16
 
 /* Private macro -------------------------------------------------------------*/
@@ -31,7 +32,8 @@ static uint8_t currentPrintFunction = 0;
 static void test_function(void);
 static void print_Moisture(void);
 static void print_WaterLevel(void);
-static void print_HelloWorld(void);
+static void print_SystemTime(void);
+static void print_Prediction(void);
 
 static void helper_printLine(uint32_t line, const char *string);
 
@@ -41,9 +43,10 @@ static void helper_printLine(uint32_t line, const char *string);
 void Display_Controller_Init(void) {
     Tim_EnableIRQ(false, TIMER_2);
     Lcd_Init(&lcdScreen, PCF8574_ADDR7);
-    display_print[0] = print_HelloWorld;
+    display_print[0] = print_SystemTime;
     display_print[1] = print_Moisture;
     display_print[2] = print_WaterLevel;
+    display_print[3] = print_Prediction;
 
     Tim_EnableIRQ(true, TIMER_2);
     Tim_Enable(true, TIMER_2);
@@ -118,10 +121,23 @@ static void print_WaterLevel(void) {
     helper_printLine(0, lines[0]);
     helper_printLine(1, lines[1]);
 }
-static void print_HelloWorld(void) {
+static void print_SystemTime(void) {
     char lines[2][LINE_LENGTH] = {"System Time:", ""};
     sTime_t time = Rtc_Get_Time();
     sprintf(lines[1], "%d:%d:%d", time.hours, time.minutes, time.seconds);
+
+    helper_printLine(0, lines[0]);
+    helper_printLine(1, lines[1]);
+}
+
+static void print_Prediction(void) {
+    char lines[2][LINE_LENGTH] = {"Time left before", ""};
+    uint32_t hoursLeft = Prediction_Controller_GetHoursLeft();
+    if (hoursLeft == 0) {
+        sprintf(lines[1], "refill: n/a");
+    } else {
+        sprintf(lines[1], "refill: %luh", hoursLeft);
+    }
 
     helper_printLine(0, lines[0]);
     helper_printLine(1, lines[1]);

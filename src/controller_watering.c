@@ -8,13 +8,10 @@
 #include "stm32f4xx_ll_utils.h"
 
 
-#define INTERVAL_10S 10000
-#define INTERVAL_10M 600000
-#define PUMP_ACTIVE_DELAY INTERVAL_10S
-#define WAITING_FOR_SOIL_DELAY INTERVAL_10M
+#define PUMP_ACTIVE_DELAY 2000
 
 
-waterPump_t pump;
+static waterPump_t pump;
 
 void Watering_Controller_Init(void) {
     Water_Pump_Init(&pump, Gpio_Port_A, Gpio_Pin_8);
@@ -25,5 +22,4 @@ void Watering_Controller_WaterPlant(void) {
     Water_Pump_Enable(&pump, true);
     LL_mDelay(PUMP_ACTIVE_DELAY);
     Water_Pump_Enable(&pump, false);
-    LL_mDelay(WAITING_FOR_SOIL_DELAY);
 }

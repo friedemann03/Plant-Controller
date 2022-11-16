@@ -16,6 +16,7 @@
 #include "controller_timeout.h"
 #include "controller_button.h"
 #include "controller_watering.h"
+#include "controller_prediction.h"
 
 #include "subsystem_rtc.h"
 
@@ -70,6 +71,7 @@ void System_Control_Init(void) {
     Timeout_Controller_Init();
     Button_Controller_Init();
     Watering_Controller_Init();
+    Prediction_Controller_Init();
 
     Tank_Controller_Set_EmptyLimit(TANK_EMPTY);
     Soil_Controller_Set_DryLimit(SOIL_DRY);
@@ -92,7 +94,6 @@ _Noreturn void System_Control_Start(void) {
         if (Shell_Read_Function()) {                                // if a character was received in the shell
             Timeout_Controller_Reset();                             // reset the idle timeout
         }
-        LOG_DEBUG("Current Soil Moisture: %lu", Soil_Controller_GetSoilMoisture());
     }
 }
 
@@ -137,6 +138,7 @@ STATIC void Enter_New_State(eState newState) {
             Led_Controller_EnableFastMode(true);
             Led_Controller_Enable(true);
             Display_Controller_Show_Watering();
+            Prediction_Controller_WateringStart();
             break;
         case STATE_ERROR_TANK_EMPTY:
             Led_Controller_EnableLedOn(true);
@@ -176,8 +178,15 @@ STATIC void Execute_Current_State(eState currentState) {
             // when the function exits, the system is awake again
             break;
         case STATE_WATERING:
-            // water the plant and then update the soil controller to clear event if necessary
+            Tank_Controller_Update();
+
+            // water the plant
             Watering_Controller_WaterPlant();
+
+            // go into stop mode
+            Power_Controller_StopMode();
+
+            // check for soil moisture
             Soil_Controller_Update();
             break;
         case STATE_ERROR_TANK_EMPTY:
@@ -208,6 +217,7 @@ STATIC void Exit_Current_State(eState currentState) {
         }
             break;
         case STATE_WATERING:
+            Prediction_Controller_WateringEnd();
             Led_Controller_EnableFastMode(false);
             Led_Controller_Enable(false);
             break;
