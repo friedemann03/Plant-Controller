@@ -24,6 +24,10 @@ static uint8_t index_Times = 0;
 
 
 /* Private Prototypes -------------------------------------------------*/
+static void time_End(void);
+static void time_Start(void);
+static void tankLevel_WateringEnd(void);
+static void tankLevel_WateringStart(void);
 STATIC uint32_t get_AmountOfWaterings();
 STATIC uint32_t get_AverageOfTimes();
 STATIC uint32_t get_AverageOfTankLevels();
@@ -37,25 +41,45 @@ void Prediction_Controller_Init(void) {
 }
 
 void Prediction_Controller_WateringStart(void) {
-    // Time End
+    time_End();
+
+    tankLevel_WateringStart();
+}
+
+void Prediction_Controller_WateringEnd(void) {
+    time_Start();
+
+    tankLevel_WateringEnd();
+}
+
+uint32_t Prediction_Controller_GetHoursLeft(void) {
+    uint32_t avgTime = get_AverageOfTimes();
+    uint32_t amountOfWaterings = get_AmountOfWaterings();
+    uint32_t timeLeftInSeconds = avgTime * amountOfWaterings;
+    return timeLeftInSeconds / 360;
+}
+
+/* Private Function Definitions --------------------------------------*/
+static void time_Start(void) {
+    timeInSeconds = 0;
+    Tim_EnableIRQ(true, PREDICTION_TIMER);
+    Tim_Enable(true, PREDICTION_TIMER);
+}
+
+static void time_End(void) {
     Tim_Enable(false, PREDICTION_TIMER);
     Tim_Enable(false, PREDICTION_TIMER);
     uint32_t timeSinceLastWatering = timeInSeconds;
     index_Times = (index_Times + 1) % NUMBER_OF_MEASUREMENTS;
     timeInBetweenWaterings[index_Times] = timeSinceLastWatering;
     timeInSeconds = 0;
+}
 
-    // Tank Start
+static void tankLevel_WateringStart(void) {
     startTankLevel = Tank_Controller_GetWaterLevel();
 }
 
-void Prediction_Controller_WateringEnd(void) {
-    // Time Start
-    timeInSeconds = 0;
-    Tim_EnableIRQ(true, PREDICTION_TIMER);
-    Tim_Enable(true, PREDICTION_TIMER);
-
-    // Tank End
+static void tankLevel_WateringEnd(void) {
     uint32_t currentTankLevel = Tank_Controller_GetWaterLevel();
     uint32_t tankDifference;
     if (currentTankLevel > startTankLevel) {
@@ -67,14 +91,6 @@ void Prediction_Controller_WateringEnd(void) {
     tankLevelDifference[index_TankDiff] = tankDifference;
 }
 
-uint32_t Prediction_Controller_GetHoursLeft(void) {
-    uint32_t avgTime = get_AverageOfTimes();
-    uint32_t amountOfWaterings = get_AmountOfWaterings();
-    uint32_t timeLeftInSeconds = avgTime * amountOfWaterings;
-    return timeLeftInSeconds / 360;
-}
-
-/* Private Function Definitions --------------------------------------*/
 STATIC uint32_t get_AmountOfWaterings() {
     uint32_t avgTankLevelDifference = get_AverageOfTankLevels();
     if (avgTankLevelDifference == 0) {
