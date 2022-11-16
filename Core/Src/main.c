@@ -24,10 +24,12 @@
 #include "subsystem_uart.h"
 #include "subsystem_tim.h"
 #include "subsystem_gpio.h"
-#include "controller_led.h"
-#include "usart.h"
+#include "subsystem_i2c.h"
+#include "subsystem_adc.h"
+#include "subsystem_rtc.h"
 #include "log_module.h"
-#include "shell.h"
+#include "version.h"
+#include "system_control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,28 +93,33 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   Uart_Subsystem_Init();
+  Log_Module_Init();
 
-//  Log_Module_Init();
+  Reset_Log();
 
   Gpio_Subsystem_Init();
-
   Tim_Subsystem_Init();
+  I2c_Subsystem_Init();
+  Adc_Subsystem_Init();
+  Rtc_Subsystem_Init();
 
-  Shell_Init();
-  Led_Controller_Init();
-  
+  System_Control_Init();
+  System_Control_Start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+#pragma ide diagnostic ignored "UnreachableCode"
   while (1)
   {
-    Shell_Read_Function();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
   }
+#pragma clang diagnostic pop
   /* USER CODE END 3 */
 }
 
@@ -122,39 +129,39 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  LL_FLASH_SetLatency(LL_FLASH_LATENCY_2);
-  while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_2)
+  LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
+  while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_0)
   {
   }
   LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE3);
   LL_PWR_DisableOverDriveMode();
-  LL_RCC_HSI_SetCalibTrimming(16);
-  LL_RCC_HSI_Enable();
+  LL_RCC_HSE_Enable();
 
-   /* Wait till HSI is ready */
-  while(LL_RCC_HSI_IsReady() != 1)
+   /* Wait till HSE is ready */
+  while(LL_RCC_HSE_IsReady() != 1)
   {
 
   }
-  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_16, 336, LL_RCC_PLLP_DIV_4);
-  LL_RCC_PLL_Enable();
+  LL_PWR_EnableBkUpAccess();
+  LL_RCC_LSE_Enable();
 
-   /* Wait till PLL is ready */
-  while(LL_RCC_PLL_IsReady() != 1)
+   /* Wait till LSE is ready */
+  while(LL_RCC_LSE_IsReady() != 1)
   {
 
   }
-  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+  LL_RCC_HSE_EnableCSS();
+  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_2);
   LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
   LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
-  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSE);
 
    /* Wait till System clock is ready */
-  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_HSE)
   {
 
   }
-  LL_SetSystemCoreClock(84000000);
+  LL_SetSystemCoreClock(4000000);
 
    /* Update the time base */
   if (HAL_InitTick (TICK_INT_PRIORITY) != HAL_OK)

@@ -45,13 +45,15 @@
 /* Exported functions prototypes ---------------------------------------------*/
 void Gpio_Subsystem_Init(void);
 
+void Gpio_Subsystem_DeInit(void);
+
 void Gpio_Set_Output_Pin(uint32_t port, uint32_t pinMask);
 
 void Gpio_Reset_Output_Pin(uint32_t port, uint32_t pinMask);
 
 void Gpio_Toggle_Output_Pin(uint32_t port, uint32_t pinMask);
 
-uint32_t Gpio_Is_Input_Pin_Set(uint32_t port, uint32_t pinMask);
+bool Gpio_Is_Input_Pin_Set(uint32_t port, uint32_t pinMask);
 
 __attribute__((weak)) void Exti_15_10_Callback(void);
 

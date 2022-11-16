@@ -1,4 +1,3 @@
-#THIS FILE IS AUTO GENERATED FROM THE TEMPLATE! DO NOT CHANGE!
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_VERSION 1)
 cmake_minimum_required(VERSION 3.23)
@@ -57,6 +56,7 @@ include_directories(
         Drivers/CMSIS/Device/ST/STM32F4xx/Include
         Drivers/CMSIS/Include
         vendor/anchor/console/include
+        vendor/anchor/logging/include
 )
 
 # Includes for code completion in Unit Tests
@@ -67,16 +67,37 @@ include_directories(
 )
 
 list(APPEND SOURCES
+        src/system_control.c
+        src/system_events.c
         src/controller_led.c
+        src/controller_tank.c
+        src/controller_display.c
+        src/controller_soil.c
+        src/controller_power.c
+        src/controller_timeout.c
+        src/controller_button.c
+        src/controller_watering.c
+        src/controller_prediction.c
+        src/module_led.c
+        src/module_sr04.c
+        src/module_lcd.c
+        src/module_moisture.c
+        src/module_pump.c
         src/subsystem_tim.c
         src/subsystem_gpio.c
         src/subsystem_uart.c
-        src/retarget.c
+        src/subsystem_i2c.c
+        src/subsystem_adc.c
+        src/subsystem_rtc.c
         src/log_module.c
         src/shell.c
+        src/version.c
         Core/Src/main.c
         Core/Src/gpio.c
         Core/Src/tim.c
+        Core/Src/i2c.c
+        Core/Src/adc.c
+        Core/Src/rtc.c
         Core/Src/usart.c
         Core/Src/syscalls.c
         Core/Src/sysmem.c
@@ -84,11 +105,20 @@ list(APPEND SOURCES
         Core/Src/stm32f4xx_hal_msp.c
         Core/Src/stm32f4xx_it.c
         vendor/anchor/console/src/console.c
+        vendor/anchor/logging/src/logging.c
         Core/Startup/startup_stm32f446retx.s
         )
 
 
 add_definitions(-DDEBUG -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F446xx)
+foreach(sourcefile ${SOURCES})
+    # Add the FILE_BASENAME=filename compile definition to the list.
+    get_filename_component(basename "${sourcefile}" NAME)
+    # Set the updated compile definitions on the source file.
+    set_property(
+            SOURCE "${sourcefile}" APPEND
+            PROPERTY COMPILE_DEFINITIONS "FILENAME=\"${basename}\"")
+endforeach()
 
 file(GLOB_RECURSE SOURCES2
         "Drivers/*.*"
