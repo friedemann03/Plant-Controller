@@ -8,10 +8,7 @@
 #include "stm32f4xx_ll_utils.h"
 
 
-#define INTERVAL_10S 10000
-#define INTERVAL_10M 600000
-#define PUMP_ACTIVE_DELAY INTERVAL_10S
-#define WAITING_FOR_SOIL_DELAY INTERVAL_10M
+#define PUMP_ACTIVE_DELAY 500
 
 
 static waterPump_t pump;
