@@ -185,6 +185,7 @@ STATIC void Execute_Current_State(eState currentState) {
 
             // go into stop mode
             Power_Controller_StopMode();
+            System_Event_Get_LatestEvent(); // clear the wakeup event to allow the soil controller to successfully trigger its event
 
             // check for soil moisture
             Soil_Controller_Update();
