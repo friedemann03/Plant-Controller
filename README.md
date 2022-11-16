@@ -16,7 +16,7 @@ and displays information on an LCD screen which you can cycle through by pressin
 A long press on the button will cause the system to go into sleep mode.
 Second, by interfacing to it with a UART Terminal, that is used for debugging and setting the moisture level at which the system should water the plant.
 
-For the watering itself, the system uses a small tank and a peristaltic pump. 
+For the watering itself, the system uses a small tank and a submersible water pump. 
 The water level in the tank is monitored by an ultrasonic distance sensor. 
 If the tank is empty, the system will notify the user by blinking an LED and displaying a warning message on the LCD screen.
 The distance at which the system considers the tank to be empty is set via the UART Terminal.
