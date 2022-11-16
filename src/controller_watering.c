@@ -8,7 +8,7 @@
 #include "stm32f4xx_ll_utils.h"
 
 
-#define PUMP_ACTIVE_DELAY 500
+#define PUMP_ACTIVE_DELAY 2000
 
 
 static waterPump_t pump;
