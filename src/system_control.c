@@ -151,6 +151,7 @@ STATIC void Enter_New_State(eState newState) {
             Led_Controller_EnableLedOn(true);
             Led_Controller_Enable(true);
             Display_Controller_Show_TankError();
+            Button_Controller_Enable(true);
             break;
         case STATE_SYSTEM_ERROR:
             Display_Controller_Show_SystemError();
