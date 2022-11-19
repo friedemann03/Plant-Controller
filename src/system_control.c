@@ -76,6 +76,13 @@ void System_Control_Init(void) {
     Tank_Controller_Set_EmptyLimit(TANK_EMPTY);
     Soil_Controller_Set_DryLimit(SOIL_DRY);
     Soil_Controller_Set_MoistLimit(SOIL_WET);
+
+    Soil_Controller_Update();
+    Tank_Controller_Update();
+
+    LOG_DEBUG("Initial Soil Condition: %lu", Soil_Controller_GetSoilMoisture());
+    LOG_DEBUG("Initial Tank Condition: %lu", Tank_Controller_GetWaterLevel());
+
 }
 
 _Noreturn void System_Control_Start(void) {
