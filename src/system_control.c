@@ -186,6 +186,8 @@ STATIC void Execute_Current_State(eState currentState) {
             Event_t event = System_Event_Get_LatestEvent();
             if (event.index == NO_EVENT && event.priority == PRIO_NOEVENT) {
                 System_Event_Trigger_Event(EVENT_SOIL_WET);
+            } else {
+                System_Event_Trigger_Event(event.index);
             }
 
             break;
