@@ -171,6 +171,14 @@ STATIC void Execute_Current_State(eState currentState) {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
+
+            // Exception to handle: Soil is not dry but also not wet anymore -> no event gets generated
+            // Solution: Generate the soil is wet event yourself
+            Event_t event = System_Event_Get_LatestEvent();
+            if (event.index == NO_EVENT && event.priority == PRIO_NOEVENT) {
+                System_Event_Trigger_Event(EVENT_SOIL_WET);
+            }
+
             break;
         case STATE_SLEEP:
             // entering stop mode, turning off system
