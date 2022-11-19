@@ -169,13 +169,14 @@ STATIC void Enter_New_State(eState newState) {
  */
 STATIC void Execute_Current_State(eState currentState) {
     switch (currentState)  {
-        case STATE_ACTIVE:
+        case STATE_ACTIVE: {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
 
             break;
-        case STATE_PERIODIC_CHECK:
+        }
+        case STATE_PERIODIC_CHECK: {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
@@ -188,28 +189,32 @@ STATIC void Execute_Current_State(eState currentState) {
             }
 
             break;
+        }
         case STATE_SLEEP:
             // entering stop mode, turning off system
             Power_Controller_StopMode();
             // when the function exits, the system is awake again
             break;
-        case STATE_WATERING:
+        case STATE_WATERING: {
+            LOG_DEBUG("Current Soil Condition: %lu", Soil_Controller_GetSoilMoisture());
             Tank_Controller_Update();
 
             // water the plant
             Watering_Controller_WaterPlant();
 
-            // go into stop mode
-            Power_Controller_StopMode();
-            System_Event_Get_LatestEvent(); // clear the wakeup event to allow the soil controller to successfully trigger its event
+            // wait for a minute
+            HAL_Delay(60000);
 
             // check for soil moisture
             Soil_Controller_Update();
+
             break;
-        case STATE_ERROR_TANK_EMPTY:
+        }
+        case STATE_ERROR_TANK_EMPTY: {
             // update tank controller to clear event if necessary
             Tank_Controller_Update();
             break;
+        }
         default: // == case STATE_SYSTEM_ERROR
             break;
     }
@@ -234,7 +239,7 @@ STATIC void Exit_Current_State(eState currentState) {
         }
             break;
         case STATE_WATERING:
-            Prediction_Controller_WateringEnd();
+            //Prediction_Controller_WateringEnd();
             Led_Controller_EnableFastMode(false);
             Led_Controller_Enable(false);
             break;
