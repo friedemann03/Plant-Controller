@@ -66,6 +66,12 @@ CONSOLE_COMMAND_DEF(set_rtc_interval, "Sets the wakeup interval of the rtc.",
                     CONSOLE_INT_ARG_DEF(intervalInSecs, "Interval in seconds."));
 CONSOLE_COMMAND_DEF(pump, "Toggling on or off the pump.",
                     CONSOLE_INT_ARG_DEF(status, "1 - turn on, 0 - turn off"));
+CONSOLE_COMMAND_DEF(set_wet_limit, "Sets the soil wet limit.",
+                    CONSOLE_INT_ARG_DEF(new_limit, "new limit for the system to use to consider the soil wet"));
+CONSOLE_COMMAND_DEF(set_dry_limit, "Sets the soil dry limit.",
+                    CONSOLE_INT_ARG_DEF(new_limit, "new limit for the system to use to consider the soil dry"));
+CONSOLE_COMMAND_DEF(set_tank_limit, "Sets the tank empty limit.",
+                    CONSOLE_INT_ARG_DEF(new_limit, "new limit for the system to use to consider the tank empty"));
 
 /**
  * @brief LED command handler.
@@ -145,6 +151,17 @@ static void pump_command_handler(const pump_args_t *args) {
     Water_Pump_Enable(&tmpPump, args->status);
 }
 
+static void set_wet_limit_command_handler(const set_wet_limit_args_t *args) {
+    Soil_Controller_Set_MoistLimit(args->new_limit);
+}
+
+static void set_dry_limit_command_handler(const set_dry_limit_args_t *args) {
+    Soil_Controller_Set_DryLimit(args->new_limit);
+}
+
+static void set_tank_limit_command_handler(const set_tank_limit_args_t *args) {
+    Tank_Controller_Set_EmptyLimit(args->new_limit);
+}
 
 
 /**
