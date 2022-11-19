@@ -6,9 +6,9 @@
 #define PLANT_CONTROLLER_CONFIG_H
 
 
-#define SOIL_DRY        1000
-#define SOIL_WET        2000
-#define TANK_EMPTY      4000
+#define SOIL_DRY        1900
+#define SOIL_WET        1450
+#define TANK_EMPTY      160
 
 
 #endif //PLANT_CONTROLLER_CONFIG_H

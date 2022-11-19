@@ -6,7 +6,7 @@
 #include "unit_testing.h"
 #include "log_module.h"
 
-#define PRIO_NOEVENT 0
+
 #define PRIO_EVENT_1 1
 #define PRIO_EVENT_2 2
 #define PRIO_POWER_EVENTS 10

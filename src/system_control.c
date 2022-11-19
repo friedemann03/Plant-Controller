@@ -76,6 +76,13 @@ void System_Control_Init(void) {
     Tank_Controller_Set_EmptyLimit(TANK_EMPTY);
     Soil_Controller_Set_DryLimit(SOIL_DRY);
     Soil_Controller_Set_MoistLimit(SOIL_WET);
+
+    Soil_Controller_Update();
+    Tank_Controller_Update();
+
+    LOG_DEBUG("Initial Soil Condition: %lu", Soil_Controller_GetSoilMoisture());
+    LOG_DEBUG("Initial Tank Condition: %lu", Tank_Controller_GetWaterLevel());
+
 }
 
 _Noreturn void System_Control_Start(void) {
@@ -144,6 +151,7 @@ STATIC void Enter_New_State(eState newState) {
             Led_Controller_EnableLedOn(true);
             Led_Controller_Enable(true);
             Display_Controller_Show_TankError();
+            Button_Controller_Enable(true);
             break;
         case STATE_SYSTEM_ERROR:
             Display_Controller_Show_SystemError();
@@ -171,6 +179,14 @@ STATIC void Execute_Current_State(eState currentState) {
             // Updating Controllers to generate events if necessary
             Tank_Controller_Update();
             Soil_Controller_Update();
+
+            // Exception to handle: Soil is not dry but also not wet anymore -> no event gets generated
+            // Solution: Generate the soil is wet event yourself
+            Event_t event = System_Event_Get_LatestEvent();
+            if (event.index == NO_EVENT && event.priority == PRIO_NOEVENT) {
+                System_Event_Trigger_Event(EVENT_SOIL_WET);
+            }
+
             break;
         case STATE_SLEEP:
             // entering stop mode, turning off system
@@ -185,6 +201,7 @@ STATIC void Execute_Current_State(eState currentState) {
 
             // go into stop mode
             Power_Controller_StopMode();
+            System_Event_Get_LatestEvent(); // clear the wakeup event to allow the soil controller to successfully trigger its event
 
             // check for soil moisture
             Soil_Controller_Update();

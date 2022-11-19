@@ -8,6 +8,7 @@
 #include "stdint.h"
 
 #define NO_EVENT (0xFF)
+#define PRIO_NOEVENT (0)
 
 typedef enum {
     EVENT_IDLE_TIMEOUT,
